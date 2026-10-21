@@ -7,3 +7,6 @@ minimumReleaseAge: 10080
 engineStrict: true
 
 savePrefix: ""
+
+allowBuilds:
+  esbuild: false

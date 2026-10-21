@@ -7,13 +7,15 @@
     "node": ">=26 <27"
   },
   "scripts": {
+    "dev": "tsc -b && pnpm -r --parallel dev",
     "typecheck": "tsc -b",
     "build": "tsc -b && pnpm --filter @ariadne/web build",
     "lint": "eslint --max-warnings 0 .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "tsc -b && vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "clean": "tsc -b --clean"
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
