@@ -8,10 +8,20 @@
   },
   "scripts": {
     "typecheck": "tsc -b",
-    "build": "tsc -b && pnpm --filter @ariadne/web build"
+    "build": "tsc -b && pnpm --filter @ariadne/web build",
+    "lint": "eslint --max-warnings 0 .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@types/node": "^26.6.5",
-    "typescript": "6.0.3"
+    "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.5",
+    "eslint": "10.12.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2"
   }
 }
