@@ -7,8 +7,11 @@
     "node": ">=26 <27"
   },
   "scripts": {
-    "typecheck": "pnpm -r --parallel typecheck",
-    "build": "pnpm -r build",
-    "test": "pnpm -r test"
+    "typecheck": "tsc -b",
+    "build": "tsc -b && pnpm --filter @ariadne/web build"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "6.0.3"
   }
 }
