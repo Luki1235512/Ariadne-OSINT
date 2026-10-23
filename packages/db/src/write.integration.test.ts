@@ -2,7 +2,7 @@ import { sql } from "kysely";
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
 import { DbWriteError } from "./errors.js";
 import { createTestDb, resetData } from "./test-support/index.js";
-import { upsertObject, upsertSource } from "./write.js";
+import { removeObject, upsertLink, upsertObject, upsertSource } from "./write.js";
 
 const db = createTestDb();
 
@@ -26,6 +26,19 @@ const region = {
   type: "Location" as const,
   countryCode: "PL",
   displayName: "Region",
+  properties: {},
+};
+
+const town = { ...region, id: "test:loc:town", displayName: "Town" };
+
+const townInRegion = {
+  id: "test:loc:town/located_in/test:loc:region",
+  type: "located_in" as const,
+  fromObjectId: town.id,
+  toObjectId: region.id,
+  validFrom: "1999-01-01",
+  validTo: null,
+  confidence: null,
   properties: {},
 };
 
@@ -113,7 +126,104 @@ describe("upsertObject", () => {
   });
 });
 
+describe("upsertLink", () => {
+  beforeEach(async () => {
+    await upsertObject(db, region, ref("row-1"));
+    await upsertObject(db, town, ref("row-2"));
+  });
+
+  it("creates a link, and dates come back as plain dates", async () => {
+    expect(await upsertLink(db, townInRegion, ref("row-2"))).toBe("created");
+
+    const row = await db.selectFrom("links").selectAll().executeTakeFirstOrThrow();
+    expect(row).toMatchObject({
+      type: "located_in",
+      from_object_id: town.id,
+      to_object_id: region.id,
+      valid_from: "1999-01-01",
+      valid_to: null,
+      confidence: null,
+    });
+  });
+
+  it("is idempotent", async () => {
+    await upsertLink(db, townInRegion, ref("row-2"));
+    expect(await upsertLink(db, townInRegion, ref("row-2"))).toBe("unchanged");
+  });
+
+  it("updates a changed validity period", async () => {
+    await upsertLink(db, townInRegion, ref("row-2"));
+    expect(await upsertLink(db, { ...townInRegion, validTo: "2020-12-31" }, ref("row-2"))).toBe(
+      "updated",
+    );
+    const row = await db.selectFrom("links").select("valid_to").executeTakeFirstOrThrow();
+    expect(row.valid_to).toBe("2020-12-31");
+  });
+
+  it("stores the confidence of an inferred link", async () => {
+    await upsertLink(db, { ...townInRegion, confidence: 0.85 }, ref("row-2"));
+    const row = await db.selectFrom("links").select("confidence").executeTakeFirstOrThrow();
+    expect(row.confidence).toBe(0.85);
+  });
+
+  it("rejects a link to a missing object", async () => {
+    await expectCode(
+      upsertLink(db, { ...townInRegion, toObjectId: "test:loc:nowhere" }, ref("row-2")),
+      "MISSING_OBJECT",
+    );
+  });
+
+  it("requires at least one source", async () => {
+    await expectCode(upsertLink(db, townInRegion, []), "NO_SOURCES");
+  });
+});
+
+describe("removeObject", () => {
+  beforeEach(async () => {
+    await upsertObject(db, region, ref("row-1"));
+    await upsertObject(db, town, ref("row-2"));
+    await upsertLink(db, townInRegion, ref("row-2"));
+  });
+
+  it("deletes the object with its links and source references", async () => {
+    expect(await removeObject(db, town.id, "Removal request")).toBe(true);
+
+    expect(await db.selectFrom("objects").select("id").execute()).toEqual([{ id: region.id }]);
+    expect(await db.selectFrom("links").select("id").execute()).toEqual([]);
+    expect(await db.selectFrom("link_sources").select("link_id").execute()).toEqual([]);
+    expect(
+      await db
+        .selectFrom("object_sources")
+        .select("object_id")
+        .where("object_id", "=", town.id)
+        .execute(),
+    ).toEqual([]);
+  });
+
+  it("keeps a re-import from bringing the object back", async () => {
+    await removeObject(db, town.id, "Removal request");
+
+    expect(await upsertObject(db, town, ref("row-2"))).toBe("suppressed");
+    expect(await upsertLink(db, townInRegion, ref("row-2"))).toBe("suppressed");
+    expect(await db.selectFrom("objects").select("id").execute()).toEqual([{ id: region.id }]);
+  });
+
+  it("requires a reason", async () => {
+    await expectCode(removeObject(db, town.id, " "), "INVALID_INPUT");
+  });
+});
+
 describe("database constraints", () => {
+  it("rejects a link from an object to itself", async () => {
+    await upsertObject(db, region, ref("row-1"));
+    await expect(
+      sql`
+        INSERT INTO links (id, type, from_object_id, to_object_id)
+        VALUES ('test:l:self', 'located_in', ${region.id}, ${region.id})
+      `.execute(db),
+    ).rejects.toThrow(/check constraint/);
+  });
+
   it("rejects an unknown object type", async () => {
     await expect(
       sql`
