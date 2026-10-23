@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "packages/shared" },
+    { "path": "packages/db" },
     { "path": "packages/ingest" },
     { "path": "apps/api" },
     { "path": "apps/web" },
