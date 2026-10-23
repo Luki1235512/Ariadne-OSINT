@@ -13,7 +13,8 @@
     "lint": "eslint --max-warnings 0 .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "tsc -b && vitest run",
+    "test": "tsc -b && vitest run --project \"!integration\"",
+    "test:integration": "tsc -b && vitest run --project integration",
     "test:watch": "vitest",
     "clean": "tsc -b --clean",
     "db:migrate": "tsc -b && node --env-file-if-exists=.env packages/db/dist/migrate-cli.js"

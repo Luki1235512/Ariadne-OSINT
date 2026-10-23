@@ -1,15 +1,32 @@
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
+
+try {
+  process.loadEnvFile(".env");
+} catch {
+  // No .env file: rely on the environment.
+}
+
+const unit = {
+  include: ["src/**/*.test.{ts,tsx}"],
+  exclude: [...configDefaults.exclude, "**/*.integration.test.ts"],
+};
 
 export default defineConfig({
   test: {
-    include: ["src/**/*.test.{ts,tsx}"],
-
     projects: [
-      { extends: true, test: { name: "shared", root: "packages/shared" } },
-      { extends: true, test: { name: "db", root: "packages/db" } },
-      { extends: true, test: { name: "ingest", root: "packages/ingest" } },
-      { extends: true, test: { name: "api", root: "apps/api" } },
+      { test: { ...unit, name: "shared", root: "packages/shared" } },
+      { test: { ...unit, name: "db", root: "packages/db" } },
+      { test: { ...unit, name: "ingest", root: "packages/ingest" } },
+      { test: { ...unit, name: "api", root: "apps/api" } },
       "apps/web",
+      {
+        test: {
+          name: "integration",
+          include: ["{apps,packages}/*/src/**/*.integration.test.ts"],
+          globalSetup: ["packages/db/src/test-support/global-setup.ts"],
+          fileParallelism: false,
+        },
+      },
     ],
   },
 });
