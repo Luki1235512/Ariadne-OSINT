@@ -6,12 +6,17 @@
   "files": [
     "dist",
     "migrations",
-    "!dist/**/*.test.*"
+    "!dist/**/*.test.*",
+    "!dist/test-support"
   ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./test-support": {
+      "types": "./dist/test-support/index.d.ts",
+      "default": "./dist/test-support/index.js"
     }
   },
   "dependencies": {
