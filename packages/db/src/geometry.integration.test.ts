@@ -25,7 +25,13 @@ beforeEach(async () => {
   });
   await upsertObject(
     db,
-    { id: objectId, type: "Location", countryCode: "PL", displayName: "Area", properties: {} },
+    {
+      id: objectId,
+      type: "Location",
+      countryCode: "PL",
+      displayName: "Area",
+      properties: { kind: "administrative_area", adminLevel: 3, areaKm2: 80, countryData: {} },
+    },
     [{ sourceId, recordRef: "area-1" }],
   );
 });
