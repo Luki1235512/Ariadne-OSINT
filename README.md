@@ -30,7 +30,7 @@ Create your local settings once:
 cp .env.example .env
 ```
 
-Then set `POSTGRES_PASSWORD` in `.env` to a random value, for example the output of `openssl rand -hex 24`. The password is only applied when the database is first created; to change it later, delete the database with `docker compose down -v` and start it again.
+Then choose a random password, for example the output of `openssl rand -hex 24`, and put it in `.env` in three places: `POSTGRES_PASSWORD`, `DATABASE_URL` and `TEST_DATABASE_URL`. The password is only applied when the database is first created; to change it later, delete the database with `docker compose down -v` and start it again.
 
 ## Run
 
@@ -38,6 +38,7 @@ Then set `POSTGRES_PASSWORD` in `.env` to a random value, for example the output
 
 ```bash
 docker compose up -d db
+pnpm db:migrate
 pnpm dev
 ```
 
@@ -53,14 +54,16 @@ Open http://localhost:8080. Stop with `docker compose down`. `docker compose dow
 
 ## Commands
 
-| Command             | What it does                                           |
-| ------------------- | ------------------------------------------------------ |
-| `pnpm dev`          | Runs the API and web app with reload on save           |
-| `pnpm typecheck`    | Type-checks and compiles all packages                  |
-| `pnpm lint`         | Runs ESLint                                            |
-| `pnpm format`       | Formats all files with Prettier                        |
-| `pnpm format:check` | Checks formatting without changing files               |
-| `pnpm test`         | Builds, then runs all tests once                       |
-| `pnpm test:watch`   | Reruns tests on every save                             |
-| `pnpm build`        | Production build of all packages                       |
-| `pnpm clean`        | Removes all build output; use when builds behave oddly |
+| Command                 | What it does                                                |
+| ----------------------- | ----------------------------------------------------------- |
+| `pnpm dev`              | Runs the API and web app with reload on save                |
+| `pnpm typecheck`        | Type-checks and compiles all packages                       |
+| `pnpm lint`             | Runs ESLint                                                 |
+| `pnpm format`           | Formats all files with Prettier                             |
+| `pnpm format:check`     | Checks formatting without changing files                    |
+| `pnpm test`             | Builds, then runs all tests once                            |
+| `pnpm test:watch`       | Reruns tests on every save                                  |
+| `pnpm test:integration` | Runs the database tests; needs `docker compose up -d db`    |
+| `pnpm db:migrate`       | Applies new database migrations to the development database |
+| `pnpm build`            | Production build of all packages                            |
+| `pnpm clean`            | Removes all build output; use when builds behave oddly      |
