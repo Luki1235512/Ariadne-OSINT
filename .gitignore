@@ -10,7 +10,10 @@ coverage/
 !.env.example
 
 # Downloaded datasets for importers. Never committed.
-data/raw/
+data/
+
+# Repository snapshots made with Repomix for sharing.
+repomix-output.*
 
 # Playwright
 playwright-report/
