@@ -64,6 +64,14 @@ export interface SuppressionsTable {
   created_at: Generated<Date>;
 }
 
+export interface ObjectGeometriesTable {
+  object_id: string;
+  kind: "boundary" | "point";
+  geom: string;
+  source_id: string;
+  updated_at: Timestamp;
+}
+
 export interface Database {
   object_types: ObjectTypesTable;
   link_types: LinkTypesTable;
@@ -73,4 +81,5 @@ export interface Database {
   object_sources: ObjectSourcesTable;
   link_sources: LinkSourcesTable;
   suppressions: SuppressionsTable;
+  object_geometries: ObjectGeometriesTable;
 }

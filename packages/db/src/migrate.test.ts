@@ -28,6 +28,7 @@ describe("readMigrations", () => {
     expect(migrations.map((m) => `${m.version}_${m.name}`)).toEqual([
       "0001_core_schema",
       "0002_location_type",
+      "0003_object_geometries",
     ]);
   });
 
