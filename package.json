@@ -18,7 +18,8 @@
     "test:watch": "vitest",
     "clean": "tsc -b --clean",
     "db:migrate": "tsc -b && node --env-file-if-exists=.env packages/db/dist/migrate-cli.js",
-    "ingest:prg:convert": "bash packages/ingest/scripts/prg-convert.sh"
+    "ingest:prg:convert": "bash packages/ingest/scripts/prg-convert.sh",
+    "ingest:prg": "tsc -b && node --env-file-if-exists=.env packages/ingest/dist/prg/cli.js"
   },
   "devDependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "4.8.1",

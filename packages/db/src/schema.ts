@@ -1,4 +1,4 @@
-import type { ColumnType, Generated } from "kysely";
+import type { ColumnType, Generated, Kysely } from "kysely";
 
 type JsonObject = ColumnType<Record<string, unknown>, string, string>;
 type Timestamp = ColumnType<Date, string | undefined, string>;
@@ -83,3 +83,5 @@ export interface Database {
   suppressions: SuppressionsTable;
   object_geometries: ObjectGeometriesTable;
 }
+
+export type Db = Kysely<Database>;

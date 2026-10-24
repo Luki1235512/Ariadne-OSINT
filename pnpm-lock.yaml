@@ -259,6 +259,9 @@ importers:
 
   packages/ingest:
     dependencies:
+      '@ariadne/db':
+        specifier: workspace:*
+        version: link:../db
       '@ariadne/shared':
         specifier: workspace:*
         version: link:../shared
