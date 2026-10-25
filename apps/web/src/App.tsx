@@ -9,11 +9,18 @@ export function App() {
       <header className="header">
         <h1>Ariadne</h1>
       </header>
-      <div className={panelOpen ? "body" : "body body--panel-closed"}>
+      <div className="body">
         <main className="map-area">
           <MapView />
         </main>
-        <aside id="side-panel" className="panel" aria-label="Panel boczny" hidden={!panelOpen} />
+        <aside
+          id="side-panel"
+          className={panelOpen ? "panel" : "panel panel--closed"}
+          aria-label="Panel boczny"
+          inert={!panelOpen}
+        >
+          <div className="panel-content" />
+        </aside>
       </div>
       <button
         type="button"
