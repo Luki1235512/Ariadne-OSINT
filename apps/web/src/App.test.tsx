@@ -7,4 +7,11 @@ describe("App", () => {
     const html = renderToStaticMarkup(<App />);
     expect(html).toContain("<h1>Ariadne</h1>");
   });
+
+  it("renders the map area and an open side panel", () => {
+    const html = renderToStaticMarkup(<App />);
+    expect(html).toContain('aria-label="Map"');
+    expect(html).toContain('aria-label="Side panel"');
+    expect(html).toContain('aria-expanded="true"');
+  });
 });
