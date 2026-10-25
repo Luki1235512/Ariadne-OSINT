@@ -26,10 +26,20 @@ const region = {
   type: "Location" as const,
   countryCode: "PL",
   displayName: "Region",
-  properties: {},
+  properties: {
+    kind: "administrative_area" as const,
+    adminLevel: 1,
+    areaKm2: null,
+    countryData: {},
+  },
 };
 
-const town = { ...region, id: "test:loc:town", displayName: "Town" };
+const town = {
+  ...region,
+  id: "test:loc:town",
+  displayName: "Town",
+  properties: { ...region.properties, adminLevel: 3 },
+};
 
 const townInRegion = {
   id: "test:loc:town/located_in/test:loc:region",
@@ -66,7 +76,7 @@ describe("upsertObject", () => {
       .where("id", "=", region.id)
       .executeTakeFirstOrThrow();
     expect(row).toMatchObject({ type: "Location", country_code: "PL", display_name: "Region" });
-    expect(row.properties).toEqual({});
+    expect(row.properties).toEqual(region.properties);
 
     const refs = await db.selectFrom("object_sources").selectAll().execute();
     expect(refs).toEqual([{ object_id: region.id, source_id: source.id, record_ref: "row-1" }]);

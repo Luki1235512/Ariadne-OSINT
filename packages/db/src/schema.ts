@@ -1,4 +1,4 @@
-import type { ColumnType, Generated } from "kysely";
+import type { ColumnType, Generated, Kysely } from "kysely";
 
 type JsonObject = ColumnType<Record<string, unknown>, string, string>;
 type Timestamp = ColumnType<Date, string | undefined, string>;
@@ -64,6 +64,14 @@ export interface SuppressionsTable {
   created_at: Generated<Date>;
 }
 
+export interface ObjectGeometriesTable {
+  object_id: string;
+  kind: "boundary" | "point";
+  geom: string;
+  source_id: string;
+  updated_at: Timestamp;
+}
+
 export interface Database {
   object_types: ObjectTypesTable;
   link_types: LinkTypesTable;
@@ -73,4 +81,7 @@ export interface Database {
   object_sources: ObjectSourcesTable;
   link_sources: LinkSourcesTable;
   suppressions: SuppressionsTable;
+  object_geometries: ObjectGeometriesTable;
 }
+
+export type Db = Kysely<Database>;
