@@ -14,7 +14,7 @@ export function MapView() {
       return;
     }
 
-    let cancelled = false;
+    const abort = new AbortController();
     let cleanup: (() => void) | undefined;
 
     void (async () => {
@@ -23,7 +23,7 @@ export function MapView() {
         import("maplibre-gl/dist/maplibre-gl-worker.mjs?url"),
         import("maplibre-gl/dist/maplibre-gl.css"),
       ]);
-      if (cancelled) {
+      if (abort.signal.aborted) {
         return;
       }
       maplibre.setWorkerUrl(worker.default);
@@ -50,7 +50,7 @@ export function MapView() {
     });
 
     return () => {
-      cancelled = true;
+      abort.abort();
       cleanup?.();
     };
   }, []);
