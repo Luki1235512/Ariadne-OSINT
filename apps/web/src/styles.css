@@ -62,17 +62,13 @@ body {
   overflow: hidden;
 }
 
-/* The map always fills the whole area. It is never resized when the panel moves,
-   because resizing clears MapLibre's canvas and makes it flash black. */
 .map-area {
   position: absolute;
   inset: 0;
-  z-index: 0; /* contains MapLibre's own z-indexes so they cannot cover the panel */
+  z-index: 0;
   overflow: hidden;
 }
 
-/* Two classes, so this wins over `.maplibregl-map { position: relative }`,
-   which MapLibre's own stylesheet loads later. Without it the map has no height. */
 .map-area .map {
   position: absolute;
   inset: 0;
@@ -80,7 +76,6 @@ body {
   height: 100%;
 }
 
-/* The panel lies over the right edge of the map and slides in and out. */
 .panel {
   position: absolute;
   top: 0;
@@ -103,7 +98,6 @@ body {
   padding: 16px;
 }
 
-/* Triangle button from the design, bottom right of the panel. */
 .panel-toggle {
   position: absolute;
   z-index: 2;

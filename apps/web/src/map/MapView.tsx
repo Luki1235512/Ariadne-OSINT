@@ -36,7 +36,6 @@ export function MapView() {
         attributionControl: false,
       });
       map.addControl(new maplibre.NavigationControl({ showCompass: false }), "top-left");
-
       map.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-left");
 
       map.on("error", (event) => {
@@ -56,5 +55,5 @@ export function MapView() {
     };
   }, []);
 
-  return <div ref={containerRef} className="map" role="application" aria-label="Mapa" />;
+  return <div ref={containerRef} className="map" role="application" aria-label="Map" />;
 }

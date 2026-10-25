@@ -16,7 +16,7 @@ export function App() {
         <aside
           id="side-panel"
           className={panelOpen ? "panel" : "panel panel--closed"}
-          aria-label="Panel boczny"
+          aria-label="Side panel"
           inert={!panelOpen}
         >
           <div className="panel-content" />
@@ -27,7 +27,7 @@ export function App() {
         className="panel-toggle"
         aria-controls="side-panel"
         aria-expanded={panelOpen}
-        aria-label={panelOpen ? "Zwiń panel boczny" : "Rozwiń panel boczny"}
+        aria-label={panelOpen ? "Collapse side panel" : "Expand side panel"}
         onClick={() => {
           setPanelOpen((open) => !open);
         }}
