@@ -199,6 +199,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@ariadne/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@ariadne/shared':
         specifier: workspace:*
         version: link:../../packages/shared
