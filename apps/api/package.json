@@ -8,10 +8,11 @@
     "!dist/**/*.test.*"
   ],
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file-if-exists=../../.env src/index.ts",
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@ariadne/db": "workspace:*",
     "@ariadne/shared": "workspace:*",
     "fastify": "5.12.7",
     "zod": "4.6.7"
