@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { addAdminLayers } from "./adminLayers";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 
@@ -37,6 +38,10 @@ export function MapView() {
       });
       map.addControl(new maplibre.NavigationControl({ showCompass: false }), "top-left");
       map.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-left");
+
+      map.on("load", () => {
+        addAdminLayers(map);
+      });
 
       map.on("error", (event) => {
         console.error("Map error", event.error);

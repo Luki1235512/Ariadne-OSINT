@@ -259,9 +259,15 @@ importers:
         specifier: 4.6.7
         version: 4.6.7
     devDependencies:
+      '@mapbox/vector-tile':
+        specifier: 3.0.0
+        version: 3.0.0
       '@types/pg':
         specifier: 8.23.1
         version: 8.23.1
+      pbf:
+        specifier: 5.1.2
+        version: 5.1.2
 
   packages/ingest:
     dependencies:
