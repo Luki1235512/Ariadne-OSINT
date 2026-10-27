@@ -18,14 +18,37 @@ services:
       retries: 10
     restart: unless-stopped
 
+  migrate:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    image: ariadne-api
+    command: ["node", "node_modules/@ariadne/db/dist/migrate-cli.js"]
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      db:
+        condition: service_healthy
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
+
   api:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
+    image: ariadne-api
     environment:
       HOST: 0.0.0.0
       PORT: "3000"
       LOG_LEVEL: info
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     init: true
     read_only: true
     cap_drop: [ALL]

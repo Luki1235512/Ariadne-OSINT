@@ -1,13 +1,16 @@
+import { createDb } from "@ariadne/db";
 import { afterAll, describe, expect, it } from "vitest";
 import { buildServer } from "./server.js";
 
+const db = createDb({ connectionString: "postgres://unused@127.0.0.1:1/unused" });
+const app = buildServer({ config: { LOG_LEVEL: "silent" }, db });
+
+afterAll(async () => {
+  await app.close();
+  await db.destroy();
+});
+
 describe("GET /api/health", () => {
-  const app = buildServer({ LOG_LEVEL: "silent" });
-
-  afterAll(async () => {
-    await app.close();
-  });
-
   it("returns ok", async () => {
     const response = await app.inject({ method: "GET", url: "/api/health" });
 

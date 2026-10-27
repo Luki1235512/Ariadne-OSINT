@@ -12,6 +12,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY tsconfig.base.json ./
 COPY packages/shared packages/shared
+COPY packages/db packages/db
 COPY apps/api apps/api
 RUN pnpm exec tsc -b apps/api
 RUN pnpm --filter @ariadne/api deploy --prod /out
