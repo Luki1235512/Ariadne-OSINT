@@ -1,6 +1,8 @@
 import { type Db, ping } from "@ariadne/db";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Config } from "./config.js";
+import { loggableError, registerErrorHandlers, sendError } from "./errors.js";
+import { registerTileRoutes } from "./tiles.js";
 
 export interface ServerOptions {
   config: Pick<Config, "LOG_LEVEL">;
@@ -27,12 +29,13 @@ export function buildServer({ config, db }: ServerOptions): FastifyInstance {
       await ping(db);
       return await reply.send({ status: "ok" });
     } catch (error) {
-      request.log.error({ err: error }, "database not reachable");
-      return reply.code(503).send({
-        error: { code: "DATABASE_UNAVAILABLE", message: "The database is not reachable" },
-      });
+      request.log.error({ err: loggableError(error) }, "database not reachable");
+      return sendError(reply, 503, "DATABASE_UNAVAILABLE", "The database is not reachable");
     }
   });
+
+  registerTileRoutes(app, db);
+  registerErrorHandlers(app);
 
   return app;
 }
