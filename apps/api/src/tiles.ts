@@ -2,6 +2,7 @@ import { adminAreaTile, type Db } from "@ariadne/db";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { sendError } from "./errors.js";
+import { NoQuery } from "./validation.js";
 
 export const MAX_TILE_ZOOM = 14;
 
@@ -31,8 +32,6 @@ export const TileParams = z
   .refine((tile) => tile.x < 2 ** tile.z && tile.y < 2 ** tile.z, {
     message: "x and y must be less than 2^z",
   });
-
-const NoQuery = z.strictObject({});
 
 export function registerTileRoutes(app: FastifyInstance, db: Db): void {
   app.get("/api/tiles/admin/:z/:x/:y", async (request, reply) => {
