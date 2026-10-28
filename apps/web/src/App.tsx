@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { MapView } from "./map/MapView";
+import { useSelection } from "./selection";
 
 export function App() {
   const [panelOpen, setPanelOpen] = useState(true);
+  const [selectedId, select] = useSelection();
 
   return (
     <div className="app">
@@ -11,7 +13,7 @@ export function App() {
       </header>
       <div className="body">
         <main className="map-area">
-          <MapView />
+          <MapView selectedId={selectedId} onSelect={select} />
         </main>
         <aside
           id="side-panel"

@@ -1,13 +1,25 @@
-import { useEffect, useRef } from "react";
-import { addAdminLayers } from "./adminLayers";
+import type { Map as MapLibreMap } from "maplibre-gl";
+import { useEffect, useRef, useState } from "react";
+import { addAdminLayers, enableAdminInteraction, showSelection } from "./adminLayers";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 
 const INITIAL_CENTER: [number, number] = [19.4, 52.1];
 const INITIAL_ZOOM = 5.5;
 
-export function MapView() {
+interface MapViewProps {
+  selectedId: string | null;
+  onSelect: (id: string | null) => void;
+}
+
+export function MapView({ selectedId, onSelect }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<MapLibreMap | null>(null);
+
+  const onSelectRef = useRef(onSelect);
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  }, [onSelect]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -29,26 +41,33 @@ export function MapView() {
       }
       maplibre.setWorkerUrl(worker.default);
 
-      const map = new maplibre.Map({
+      const instance = new maplibre.Map({
         container,
         style: STYLE_URL,
         center: INITIAL_CENTER,
         zoom: INITIAL_ZOOM,
         attributionControl: false,
       });
-      map.addControl(new maplibre.NavigationControl({ showCompass: false }), "top-left");
-      map.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-left");
+      instance.addControl(new maplibre.NavigationControl({ showCompass: false }), "top-left");
+      instance.addControl(new maplibre.AttributionControl({ compact: true }), "bottom-left");
 
-      map.on("load", () => {
-        addAdminLayers(map);
+      let disableInteraction: (() => void) | undefined;
+      instance.on("load", () => {
+        addAdminLayers(instance);
+        disableInteraction = enableAdminInteraction(instance, (id) => {
+          onSelectRef.current(id);
+        });
+        setMap(instance);
       });
 
-      map.on("error", (event) => {
+      instance.on("error", (event) => {
         console.error("Map error", event.error);
       });
 
       cleanup = () => {
-        map.remove();
+        disableInteraction?.();
+        setMap(null);
+        instance.remove();
       };
     })().catch((error: unknown) => {
       console.error("Could not start the map", error);
@@ -59,6 +78,15 @@ export function MapView() {
       cleanup?.();
     };
   }, []);
+
+  const shownRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (map === null) {
+      return;
+    }
+    showSelection(map, shownRef.current, selectedId);
+    shownRef.current = selectedId;
+  }, [map, selectedId]);
 
   return <div ref={containerRef} className="map" role="application" aria-label="Map" />;
 }
