@@ -1,6 +1,7 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 import { addAdminLayers, enableAdminInteraction, showSelection } from "./adminLayers";
+import { type FocusTarget, moveTo } from "./camera";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 
@@ -10,9 +11,10 @@ const INITIAL_ZOOM = 5.5;
 interface MapViewProps {
   selectedId: string | null;
   onSelect: (id: string | null) => void;
+  focus: FocusTarget | null;
 }
 
-export function MapView({ selectedId, onSelect }: MapViewProps) {
+export function MapView({ selectedId, onSelect, focus }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
 
@@ -87,6 +89,19 @@ export function MapView({ selectedId, onSelect }: MapViewProps) {
     showSelection(map, shownRef.current, selectedId);
     shownRef.current = selectedId;
   }, [map, selectedId]);
+
+  const movedToRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (map === null || focus === null) {
+      movedToRef.current = null;
+      return;
+    }
+    if (movedToRef.current === focus.id) {
+      return;
+    }
+    moveTo(map, focus);
+    movedToRef.current = focus.id;
+  }, [map, focus]);
 
   return <div ref={containerRef} className="map" role="application" aria-label="Map" />;
 }

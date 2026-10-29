@@ -222,3 +222,52 @@ body {
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
+
+.object h4 {
+  margin: 12px 0 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.links {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.links li {
+  padding: 2px 0;
+}
+
+.link-target {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-target:focus-visible,
+.object h2:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.link-inferred {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.object h2:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.link-group .source-meta {
+  margin: 0;
+  font-size: 0.75rem;
+}

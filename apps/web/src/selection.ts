@@ -2,6 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 
 const PARAM = "object";
 
+export interface Selection {
+  id: string | null;
+  focus: boolean;
+}
+
 function readSelection(): string | null {
   if (typeof window === "undefined") {
     return null;
@@ -10,12 +15,15 @@ function readSelection(): string | null {
   return id === null || id === "" ? null : id;
 }
 
-export function useSelection(): [string | null, (id: string | null) => void] {
-  const [selectedId, setSelectedId] = useState(readSelection);
+export function useSelection(): [Selection, (id: string | null, focus?: boolean) => void] {
+  const [selection, setSelection] = useState<Selection>(() => ({
+    id: readSelection(),
+    focus: true,
+  }));
 
   useEffect(() => {
     const onPopState = () => {
-      setSelectedId(readSelection());
+      setSelection({ id: readSelection(), focus: true });
     };
     window.addEventListener("popstate", onPopState);
     return () => {
@@ -23,7 +31,7 @@ export function useSelection(): [string | null, (id: string | null) => void] {
     };
   }, []);
 
-  const select = useCallback((id: string | null) => {
+  const select = useCallback((id: string | null, focus = false) => {
     if (id === readSelection()) {
       return;
     }
@@ -34,8 +42,8 @@ export function useSelection(): [string | null, (id: string | null) => void] {
       url.searchParams.set(PARAM, id);
     }
     window.history.pushState(null, "", url);
-    setSelectedId(id);
+    setSelection({ id, focus });
   }, []);
 
-  return [selectedId, select];
+  return [selection, select];
 }
