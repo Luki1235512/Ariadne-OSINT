@@ -2,6 +2,7 @@ import { type Db, ping } from "@ariadne/db";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Config } from "./config.js";
 import { loggableError, registerErrorHandlers, sendError } from "./errors.js";
+import { registerObjectRoutes } from "./objects.js";
 import { registerTileRoutes } from "./tiles.js";
 
 export interface ServerOptions {
@@ -11,6 +12,15 @@ export interface ServerOptions {
 
 export function buildServer({ config, db }: ServerOptions): FastifyInstance {
   const app = Fastify({
+    routerOptions: { maxParamLength: 600 },
+    frameworkErrors: (error, _request, reply) => {
+      void sendError(
+        reply,
+        error.statusCode ?? 400,
+        "INVALID_REQUEST",
+        "Malformed or too long URL",
+      );
+    },
     logger: {
       level: config.LOG_LEVEL,
       serializers: {
@@ -34,6 +44,7 @@ export function buildServer({ config, db }: ServerOptions): FastifyInstance {
     }
   });
 
+  registerObjectRoutes(app, db);
   registerTileRoutes(app, db);
   registerErrorHandlers(app);
 

@@ -3,6 +3,9 @@
   --panel-bg: #101010;
   --accent: #ff00e6;
   --text: #eaeaea;
+  --text-muted: #a3a0ad;
+  --border: #26232d;
+  --link: #c9a8ff;
   --panel-width: 320px;
   --header-height: 44px;
   --panel-transition: 250ms ease;
@@ -133,4 +136,138 @@ body {
 .panel-toggle:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
+}
+
+/* ---- Object details in the side panel ---- */
+
+.panel-hint,
+.panel-error {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.panel-error {
+  color: #ff8a9a;
+}
+
+.object h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.object h3 {
+  margin: 24px 0 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.object-type {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.properties {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.properties > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.properties dt {
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.properties dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.sources li + li {
+  margin-top: 12px;
+}
+
+.sources p {
+  margin: 0;
+}
+
+.source-meta {
+  color: var(--text-muted);
+}
+
+.object a {
+  color: var(--link);
+}
+
+.object a:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.object h4 {
+  margin: 12px 0 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.links {
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.links li {
+  padding: 2px 0;
+}
+
+.link-target {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-target:focus-visible,
+.object h2:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.link-inferred {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.object h2:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.link-group .source-meta {
+  margin: 0;
+  font-size: 0.75rem;
 }
