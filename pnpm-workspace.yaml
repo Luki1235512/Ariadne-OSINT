@@ -10,8 +10,3 @@ savePrefix: ""
 
 allowBuilds:
   esbuild: false
-
-# Security fixes younger than minimumReleaseAge. Exact versions only; remove once they are 7 days old.
-minimumReleaseAgeExclude:
-  - fast-uri@3.1.9
-  - fast-uri@4.2.3
