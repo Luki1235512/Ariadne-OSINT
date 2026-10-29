@@ -1,9 +1,9 @@
 import { type Db, ping } from "@ariadne/db";
 import Fastify, { type FastifyInstance } from "fastify";
 import type { Config } from "./config.js";
-import { loggableError, registerErrorHandlers, sendError } from "./errors.js";
-import { registerObjectRoutes } from "./objects.js";
-import { registerTileRoutes } from "./tiles.js";
+import { loggableError, registerErrorHandlers, sendError } from "./http/errors.js";
+import { registerObjectRoutes } from "./routes/objects.js";
+import { registerTileRoutes } from "./routes/tiles.js";
 
 export interface ServerOptions {
   config: Pick<Config, "LOG_LEVEL">;

@@ -1,7 +1,7 @@
 import pg from "pg";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { type Migration, migrate } from "./migrate.js";
-import { createDatabaseIfMissing, dropDatabase, testDatabaseUrl } from "./test-support/index.js";
+import { createDatabaseIfMissing, dropDatabase, testDatabaseUrl } from "../test-support/index.js";
 
 function scratchUrl(): string {
   const url = new URL(testDatabaseUrl());

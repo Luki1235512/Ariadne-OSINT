@@ -2,9 +2,9 @@ import type { AreaGeometry } from "@ariadne/shared";
 import { VectorTile } from "@mapbox/vector-tile";
 import { PbfReader } from "pbf";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { createTestDb, resetData } from "./test-support/index.js";
+import { createTestDb, resetData } from "../test-support/index.js";
 import { adminAreaTile } from "./tiles.js";
-import { upsertBoundary, upsertObject, upsertSource } from "./write.js";
+import { upsertBoundary, upsertObject, upsertSource } from "../write/write.js";
 
 const db = createTestDb();
 

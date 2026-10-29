@@ -1,5 +1,5 @@
 import { sql } from "kysely";
-import type { Db } from "./schema.js";
+import type { Db } from "../schema.js";
 
 const EXTENT = 4096;
 const BUFFER = 64;

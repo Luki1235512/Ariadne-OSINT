@@ -13,7 +13,7 @@ const FILE_PATTERN = /^(\d{4})_([a-z0-9_]+)\.sql$/;
 
 const MIGRATION_LOCK_KEY = 4_271_993_001;
 
-export const DEFAULT_MIGRATIONS_DIR = new URL("../migrations/", import.meta.url);
+export const DEFAULT_MIGRATIONS_DIR = new URL("../../migrations/", import.meta.url);
 
 export async function readMigrations(dir: URL = DEFAULT_MIGRATIONS_DIR): Promise<Migration[]> {
   const files = (await readdir(dir)).filter((file) => file.endsWith(".sql")).sort();

@@ -1,6 +1,6 @@
 import { createDb } from "@ariadne/db";
 import { afterAll, describe, expect, it } from "vitest";
-import { buildServer } from "./server.js";
+import { buildServer } from "../server.js";
 import { adminLevelForZoom, TileParams } from "./tiles.js";
 
 describe("adminLevelForZoom", () => {
