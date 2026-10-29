@@ -23,7 +23,7 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
     image: ariadne-api
-    command: ["node", "node_modules/@ariadne/db/dist/migrate-cli.js"]
+    command: ["node", "node_modules/@ariadne/db/dist/migrate/cli.js"]
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
     depends_on:

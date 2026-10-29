@@ -1,7 +1,7 @@
 import { sql } from "kysely";
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
-import { DbWriteError } from "./errors.js";
-import { createTestDb, resetData } from "./test-support/index.js";
+import { DbWriteError } from "../errors.js";
+import { createTestDb, resetData } from "../test-support/index.js";
 import { removeObject, upsertLink, upsertObject, upsertSource } from "./write.js";
 
 const db = createTestDb();

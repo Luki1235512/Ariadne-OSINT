@@ -1,8 +1,8 @@
 import { adminAreaTile, type Db } from "@ariadne/db";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { sendError } from "./errors.js";
-import { NoQuery } from "./validation.js";
+import { sendError } from "../http/errors.js";
+import { NoQuery } from "../http/validation.js";
 
 export const MAX_TILE_ZOOM = 14;
 

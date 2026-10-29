@@ -2,7 +2,7 @@ import type { Kysely } from "kysely";
 import { sql } from "kysely";
 import pg from "pg";
 import { createDb } from "../connection.js";
-import { migrate, readMigrations } from "../migrate.js";
+import { migrate, readMigrations } from "../migrate/migrate.js";
 import type { Database } from "../schema.js";
 
 export function testDatabaseUrl(): string {

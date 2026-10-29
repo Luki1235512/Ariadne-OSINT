@@ -1,6 +1,6 @@
 import { createDb } from "@ariadne/db";
 import { afterAll, describe, expect, it } from "vitest";
-import { buildServer } from "./server.js";
+import { buildServer } from "../server.js";
 
 describe("GET /api/objects/{id}, invalid requests", () => {
   const db = createDb({ connectionString: "postgres://unused@127.0.0.1:1/unused" });

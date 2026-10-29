@@ -1,7 +1,7 @@
 import { upsertBoundary, upsertObject, upsertSource } from "@ariadne/db";
 import { createTestDb, resetData } from "@ariadne/db/test-support";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { buildServer } from "./server.js";
+import { buildServer } from "../server.js";
 
 const db = createTestDb();
 const app = buildServer({ config: { LOG_LEVEL: "silent" }, db });
