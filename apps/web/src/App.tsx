@@ -4,6 +4,7 @@ import { toFocusTarget } from "./map/camera";
 import { MapView } from "./map/MapView";
 import { ObjectPanel } from "./panel/ObjectPanel";
 import { createQueryClient, useObjectDetails } from "./queries";
+import { SearchBox } from "./search/SearchBox";
 import { useSelection } from "./selection";
 
 export function App() {
@@ -28,6 +29,11 @@ function Layout() {
     <div className="app">
       <header className="header">
         <h1>Ariadne</h1>
+        <SearchBox
+          onSelect={(id) => {
+            select(id, true);
+          }}
+        />
       </header>
       <div className="body">
         <main className="map-area">
