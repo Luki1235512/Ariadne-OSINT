@@ -1,4 +1,5 @@
 export type * from "./api/objects.js";
+export type * from "./api/search.js";
 export * from "./ontology/countries/pl.js";
 export * from "./ontology/geometry.js";
 export * from "./ontology/ids.js";
