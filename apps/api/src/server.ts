@@ -3,6 +3,7 @@ import Fastify, { type FastifyInstance } from "fastify";
 import type { Config } from "./config.js";
 import { loggableError, registerErrorHandlers, sendError } from "./http/errors.js";
 import { registerObjectRoutes } from "./routes/objects.js";
+import { registerSearchRoutes } from "./routes/search.js";
 import { registerTileRoutes } from "./routes/tiles.js";
 
 export interface ServerOptions {
@@ -45,6 +46,7 @@ export function buildServer({ config, db }: ServerOptions): FastifyInstance {
   });
 
   registerObjectRoutes(app, db);
+  registerSearchRoutes(app, db);
   registerTileRoutes(app, db);
   registerErrorHandlers(app);
 
