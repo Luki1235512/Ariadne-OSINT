@@ -29,6 +29,7 @@ describe("readMigrations", () => {
       "0001_core_schema",
       "0002_location_type",
       "0003_object_geometries",
+      "0004_search",
     ]);
   });
 
