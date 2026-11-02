@@ -10,3 +10,8 @@ savePrefix: ""
 
 allowBuilds:
   esbuild: false
+
+auditConfig:
+  ignoreGhsas:
+    # Remove when ESLint's dependencies move to minimatch 11. Reviewed 2026-11-02.
+    - GHSA-g3hv-75wg-m249
