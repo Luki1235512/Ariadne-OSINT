@@ -1,4 +1,4 @@
-import type { ObjectDetails } from "@ariadne/shared";
+import type { ObjectDetails, SearchResponse } from "@ariadne/shared";
 
 export class ApiError extends Error {
   constructor(
@@ -34,4 +34,9 @@ async function getJson<T>(path: string, signal: AbortSignal): Promise<T> {
 
 export function fetchObjectDetails(id: string, signal: AbortSignal): Promise<ObjectDetails> {
   return getJson<ObjectDetails>(`/api/objects/${encodeURIComponent(id)}`, signal);
+}
+
+export function fetchSearch(query: string, signal: AbortSignal): Promise<SearchResponse> {
+  const params = new URLSearchParams({ q: query, limit: "10" });
+  return getJson<SearchResponse>(`/api/search?${params.toString()}`, signal);
 }
