@@ -1,5 +1,5 @@
-import type { LinkDetails, SourceSummary } from "@ariadne/shared";
 import { describe, expect, it } from "vitest";
+import type { LinkDetails, SourceSummary } from "@ariadne/shared";
 import { confidenceLabel, groupLinks } from "./links";
 
 const source: SourceSummary = {

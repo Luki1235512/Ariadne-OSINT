@@ -1,5 +1,5 @@
-import { createDb } from "@ariadne/db";
 import { afterAll, describe, expect, it } from "vitest";
+import { createDb } from "@ariadne/db";
 import { buildServer } from "../server.js";
 import { SearchQuery } from "./search.js";
 

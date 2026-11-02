@@ -1,6 +1,10 @@
-import type { AreaGeometry, LinkInput, ObjectInput } from "@ariadne/shared";
-import { MUNICIPALITY_TYPES } from "@ariadne/shared";
 import type { z } from "zod";
+import {
+  MUNICIPALITY_TYPES,
+  type AreaGeometry,
+  type LinkInput,
+  type ObjectInput,
+} from "@ariadne/shared";
 import type { PrgFeature } from "./record.js";
 
 export interface MappedUnit {

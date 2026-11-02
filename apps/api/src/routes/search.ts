@@ -1,7 +1,7 @@
-import { type Db, MAX_SEARCH_RESULTS, MIN_SEARCH_LENGTH, searchObjects } from "@ariadne/db";
-import type { SearchResponse } from "@ariadne/shared";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
+import { MAX_SEARCH_RESULTS, MIN_SEARCH_LENGTH, searchObjects, type Db } from "@ariadne/db";
+import type { SearchResponse } from "@ariadne/shared";
 import { sendError } from "../http/errors.js";
 
 export const MAX_QUERY_LENGTH = 100;

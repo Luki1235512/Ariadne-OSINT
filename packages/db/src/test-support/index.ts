@@ -1,5 +1,4 @@
-import type { Kysely } from "kysely";
-import { sql } from "kysely";
+import { sql, type Kysely } from "kysely";
 import pg from "pg";
 import { createDb } from "../connection.js";
 import { migrate, readMigrations } from "../migrate/migrate.js";

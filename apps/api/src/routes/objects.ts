@@ -1,7 +1,7 @@
-import { getObjectDetails, type Db } from "@ariadne/db";
-import { ObjectId } from "@ariadne/shared";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
+import { getObjectDetails, type Db } from "@ariadne/db";
+import { ObjectId } from "@ariadne/shared";
 import { sendError } from "../http/errors.js";
 import { NoQuery } from "../http/validation.js";
 

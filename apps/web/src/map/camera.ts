@@ -1,5 +1,5 @@
-import type { ObjectDetails } from "@ariadne/shared";
 import type { Map as MapLibreMap } from "maplibre-gl";
+import type { ObjectDetails } from "@ariadne/shared";
 
 export interface FocusTarget {
   id: string;

@@ -1,7 +1,7 @@
-import type { ObjectDetails } from "@ariadne/shared";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { upsertBoundary, upsertLink, upsertObject, upsertSource } from "@ariadne/db";
 import { createTestDb, resetData } from "@ariadne/db/test-support";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import type { ObjectDetails } from "@ariadne/shared";
 import { buildServer } from "../server.js";
 
 const db = createTestDb();

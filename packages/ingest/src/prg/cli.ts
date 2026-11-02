@@ -1,8 +1,8 @@
 import { basename } from "node:path";
 import { parseArgs } from "node:util";
-import { createDb } from "@ariadne/db";
 import { z } from "zod";
-import { type Counts, type ImportReport, importPrg } from "./import.js";
+import { createDb } from "@ariadne/db";
+import { importPrg, type Counts, type ImportReport } from "./import.js";
 
 const USAGE = [
   "Usage: pnpm ingest:prg <folder with converted files> --retrieved-on <YYYY-MM-DD>",

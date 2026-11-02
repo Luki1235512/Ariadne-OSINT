@@ -1,5 +1,5 @@
-import type { LinkDetails, ObjectDetails, SourceSummary } from "@ariadne/shared";
 import { sql } from "kysely";
+import type { LinkDetails, ObjectDetails, SourceSummary } from "@ariadne/shared";
 import type { Db } from "../schema.js";
 
 export const MAX_LINKS_PER_RESPONSE = 100;

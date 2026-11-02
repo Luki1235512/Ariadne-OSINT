@@ -1,5 +1,5 @@
-import type { SearchResult } from "@ariadne/shared";
 import { useId, useState } from "react";
+import type { SearchResult } from "@ariadne/shared";
 import { MIN_SEARCH_LENGTH, useSearch } from "../queries";
 import { moveActive } from "./keyboard";
 import { useDebouncedValue } from "./useDebouncedValue";
