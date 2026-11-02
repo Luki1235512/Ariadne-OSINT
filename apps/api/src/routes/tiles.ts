@@ -1,6 +1,6 @@
-import { adminAreaTile, type Db } from "@ariadne/db";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
+import { adminAreaTile, type Db } from "@ariadne/db";
 import { sendError } from "../http/errors.js";
 import { NoQuery } from "../http/validation.js";
 

@@ -1,5 +1,5 @@
+import { useEffect, useRef, type RefObject } from "react";
 import type { ObjectDetails, SourceSummary } from "@ariadne/shared";
-import { type RefObject, useEffect, useRef } from "react";
 import { ApiError } from "../api";
 import { useObjectDetails } from "../queries";
 import { flattenProperties, formatDate, safeUrl } from "./format";

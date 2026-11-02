@@ -1,6 +1,5 @@
-import type { AreaGeometry } from "@ariadne/shared";
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
-import { getObjectDetails } from "./object-details.js";
+import type { AreaGeometry } from "@ariadne/shared";
 import { createTestDb, resetData } from "../test-support/index.js";
 import {
   removeObject,
@@ -9,6 +8,7 @@ import {
   upsertObject,
   upsertSource,
 } from "../write/write.js";
+import { getObjectDetails } from "./object-details.js";
 
 const db = createTestDb();
 

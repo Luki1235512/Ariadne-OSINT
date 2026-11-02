@@ -1,7 +1,7 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 import { addAdminLayers, enableAdminInteraction, showSelection } from "./adminLayers";
-import { type FocusTarget, moveTo } from "./camera";
+import { moveTo, type FocusTarget } from "./camera";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 

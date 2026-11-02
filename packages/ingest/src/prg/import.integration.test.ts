@@ -2,9 +2,9 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
 import { removeObject } from "@ariadne/db";
 import { createTestDb, resetData } from "@ariadne/db/test-support";
-import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
 import { importPrg, PRG_LAYERS } from "./import.js";
 
 const FIXTURE = fileURLToPath(new URL("../../test-fixtures/prg/2026-01-01", import.meta.url));

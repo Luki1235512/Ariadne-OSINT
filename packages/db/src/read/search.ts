@@ -1,5 +1,5 @@
-import type { SearchResult } from "@ariadne/shared";
 import { sql } from "kysely";
+import type { SearchResult } from "@ariadne/shared";
 import type { Db } from "../schema.js";
 
 export const MAX_SEARCH_RESULTS = 20;

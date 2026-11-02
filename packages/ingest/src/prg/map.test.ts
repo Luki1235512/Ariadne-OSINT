@@ -1,6 +1,6 @@
-import { type AreaGeometry, LinkInput, ObjectInput } from "@ariadne/shared";
 import { describe, expect, it } from "vitest";
-import { type MappedUnit, mapPrgFeature, normalizeRegon, terytObjectId } from "./map.js";
+import { LinkInput, ObjectInput, type AreaGeometry } from "@ariadne/shared";
+import { mapPrgFeature, normalizeRegon, terytObjectId, type MappedUnit } from "./map.js";
 import { PrgFeature } from "./record.js";
 
 const square: AreaGeometry = {

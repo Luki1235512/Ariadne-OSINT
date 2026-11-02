@@ -1,5 +1,5 @@
-import { type Db, ping } from "@ariadne/db";
 import Fastify, { type FastifyInstance } from "fastify";
+import { ping, type Db } from "@ariadne/db";
 import type { Config } from "./config.js";
 import { loggableError, registerErrorHandlers, sendError } from "./http/errors.js";
 import { registerObjectRoutes } from "./routes/objects.js";

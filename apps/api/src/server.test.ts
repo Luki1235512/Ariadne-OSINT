@@ -1,5 +1,5 @@
-import { createDb } from "@ariadne/db";
 import { afterAll, describe, expect, it } from "vitest";
+import { createDb } from "@ariadne/db";
 import { buildServer } from "./server.js";
 
 const db = createDb({ connectionString: "postgres://unused@127.0.0.1:1/unused" });

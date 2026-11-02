@@ -1,3 +1,5 @@
+import { sql, type Kysely, type Transaction } from "kysely";
+import { z } from "zod";
 import {
   BoundaryInput,
   LINK_ENDPOINTS,
@@ -5,10 +7,8 @@ import {
   ObjectInput,
   SourceInput,
   SourceReference,
+  type ObjectType,
 } from "@ariadne/shared";
-import type { ObjectType } from "@ariadne/shared";
-import { sql, type Kysely, type Transaction } from "kysely";
-import { z } from "zod";
 import { DbWriteError } from "../errors.js";
 import type { Database } from "../schema.js";
 

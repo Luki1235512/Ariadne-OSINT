@@ -2,12 +2,12 @@ import { createReadStream } from "node:fs";
 import { join } from "node:path";
 import { createInterface } from "node:readline";
 import {
-  type Db,
   DbWriteError,
   upsertBoundary,
   upsertLink,
   upsertObject,
   upsertSource,
+  type Db,
   type WriteResult,
 } from "@ariadne/db";
 import { mapPrgFeature } from "./map.js";
