@@ -9,14 +9,27 @@ describe("loadConfig", () => {
       HOST: "127.0.0.1",
       PORT: 3000,
       LOG_LEVEL: "info",
+      TRUST_PROXY_HOPS: 0,
       DATABASE_URL,
     });
   });
 
   it("reads values from the environment", () => {
-    expect(loadConfig({ HOST: "0.0.0.0", PORT: "8000", LOG_LEVEL: "debug", DATABASE_URL })).toEqual(
-      { HOST: "0.0.0.0", PORT: 8000, LOG_LEVEL: "debug", DATABASE_URL },
-    );
+    expect(
+      loadConfig({
+        HOST: "0.0.0.0",
+        PORT: "8000",
+        LOG_LEVEL: "debug",
+        TRUST_PROXY_HOPS: "1",
+        DATABASE_URL,
+      }),
+    ).toEqual({
+      HOST: "0.0.0.0",
+      PORT: 8000,
+      LOG_LEVEL: "debug",
+      TRUST_PROXY_HOPS: 1,
+      DATABASE_URL,
+    });
   });
 
   it("requires the database connection string", () => {
@@ -25,6 +38,11 @@ describe("loadConfig", () => {
 
   it("rejects an invalid port", () => {
     expect(() => loadConfig({ DATABASE_URL, PORT: "not-a-number" })).toThrow(/PORT/);
+  });
+
+  it("rejects an invalid number of proxy hops", () => {
+    expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "-1" })).toThrow(/TRUST_PROXY_HOPS/);
+    expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "all" })).toThrow(/TRUST_PROXY_HOPS/);
   });
 
   it("rejects an unknown log level", () => {

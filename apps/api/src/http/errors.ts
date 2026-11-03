@@ -1,6 +1,7 @@
 import type { FastifyError, FastifyInstance, FastifyReply } from "fastify";
 
-export type ErrorCode = "INVALID_REQUEST" | "NOT_FOUND" | "DATABASE_UNAVAILABLE" | "INTERNAL_ERROR";
+export type ErrorCode =
+  "INVALID_REQUEST" | "NOT_FOUND" | "RATE_LIMITED" | "DATABASE_UNAVAILABLE" | "INTERNAL_ERROR";
 
 export interface ErrorBody {
   error: { code: ErrorCode; message: string };
@@ -34,6 +35,9 @@ export function registerErrorHandlers(app: FastifyInstance): void {
 
   app.setErrorHandler((error: FastifyError, request, reply) => {
     const status = error.statusCode;
+    if (status === 429) {
+      return sendError(reply, 429, "RATE_LIMITED", error.message);
+    }
     if (status !== undefined && status >= 400 && status < 500) {
       return sendError(reply, status, "INVALID_REQUEST", error.message);
     }
