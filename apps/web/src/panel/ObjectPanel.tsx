@@ -47,6 +47,9 @@ function errorMessage(error: Error): string {
   if (error instanceof ApiError && error.code === "NOT_FOUND") {
     return "This object does not exist, or it has been removed.";
   }
+  if (error instanceof ApiError && error.code === "RATE_LIMITED") {
+    return "Too many requests. Wait a minute and try again.";
+  }
   if (error instanceof ApiError && error.code === "INVALID_REQUEST") {
     return "The address contains an invalid object ID.";
   }

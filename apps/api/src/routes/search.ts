@@ -3,6 +3,7 @@ import { z } from "zod";
 import { MAX_SEARCH_RESULTS, MIN_SEARCH_LENGTH, searchObjects, type Db } from "@ariadne/db";
 import type { SearchResponse } from "@ariadne/shared";
 import { sendError } from "../http/errors.js";
+import { RATE_LIMITS, routeLimit } from "../http/rate-limits.js";
 
 export const MAX_QUERY_LENGTH = 100;
 
@@ -17,7 +18,7 @@ export const SearchQuery = z.strictObject({
 });
 
 export function registerSearchRoutes(app: FastifyInstance, db: Db): void {
-  app.get("/api/search", async (request, reply) => {
+  app.get("/api/search", { config: routeLimit(RATE_LIMITS.search) }, async (request, reply) => {
     const query = SearchQuery.safeParse(request.query);
     if (!query.success) {
       return sendError(

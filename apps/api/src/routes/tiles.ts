@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { adminAreaTile, type Db } from "@ariadne/db";
 import { sendError } from "../http/errors.js";
+import { RATE_LIMITS, routeLimit } from "../http/rate-limits.js";
 import { NoQuery } from "../http/validation.js";
 
 export const MAX_TILE_ZOOM = 14;
@@ -34,24 +35,28 @@ export const TileParams = z
   });
 
 export function registerTileRoutes(app: FastifyInstance, db: Db): void {
-  app.get("/api/tiles/admin/:z/:x/:y", async (request, reply) => {
-    const params = TileParams.safeParse(request.params);
-    if (!params.success || !NoQuery.safeParse(request.query).success) {
-      return sendError(
-        reply,
-        400,
-        "INVALID_REQUEST",
-        `Expected /api/tiles/admin/{z}/{x}/{y} with whole numbers, z from 0 to ${String(MAX_TILE_ZOOM)}, and x and y below 2^z`,
-      );
-    }
+  app.get(
+    "/api/tiles/admin/:z/:x/:y",
+    { config: routeLimit(RATE_LIMITS.tiles) },
+    async (request, reply) => {
+      const params = TileParams.safeParse(request.params);
+      if (!params.success || !NoQuery.safeParse(request.query).success) {
+        return sendError(
+          reply,
+          400,
+          "INVALID_REQUEST",
+          `Expected /api/tiles/admin/{z}/{x}/{y} with whole numbers, z from 0 to ${String(MAX_TILE_ZOOM)}, and x and y below 2^z`,
+        );
+      }
 
-    const { z: zoom, x, y } = params.data;
-    const tile = await adminAreaTile(db, { z: zoom, x, y, adminLevel: adminLevelForZoom(zoom) });
+      const { z: zoom, x, y } = params.data;
+      const tile = await adminAreaTile(db, { z: zoom, x, y, adminLevel: adminLevelForZoom(zoom) });
 
-    reply.header("cache-control", TILE_CACHE_CONTROL);
-    if (tile.length === 0) {
-      return reply.code(204).send();
-    }
-    return reply.type("application/vnd.mapbox-vector-tile").send(tile);
-  });
+      reply.header("cache-control", TILE_CACHE_CONTROL);
+      if (tile.length === 0) {
+        return reply.code(204).send();
+      }
+      return reply.type("application/vnd.mapbox-vector-tile").send(tile);
+    },
+  );
 }
