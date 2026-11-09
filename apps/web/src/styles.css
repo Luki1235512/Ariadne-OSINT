@@ -360,3 +360,45 @@ body {
   white-space: nowrap;
   border: 0;
 }
+
+/* ---- Areas in view, below the details in the side panel ---- */
+
+.in-view {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.in-view h2 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.in-view-count {
+  color: var(--text-muted);
+}
+
+.in-view-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.in-view-list li {
+  padding: 2px 0;
+}
+
+.in-view-list .link-target[aria-current="true"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.in-view-list .link-target:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}

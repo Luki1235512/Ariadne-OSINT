@@ -1,7 +1,9 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { toFocusTarget } from "./map/camera";
+import { sameAreas, type AreaInView } from "./map/inView";
 import { MapView } from "./map/MapView";
+import { AreasInView } from "./panel/AreasInView";
 import { ObjectPanel } from "./panel/ObjectPanel";
 import { createQueryClient, useObjectDetails } from "./queries";
 import { SearchBox } from "./search/SearchBox";
@@ -25,6 +27,19 @@ function Layout() {
   const focus =
     selection.focus && details.data?.id === selectedId ? toFocusTarget(details.data) : null;
 
+  const [areas, setAreas] = useState<AreaInView[]>([]);
+  const updateAreas = useCallback((next: AreaInView[]) => {
+    setAreas((current) => (sameAreas(current, next) ? current : next));
+  }, []);
+
+  const focusTitleRef = useRef(false);
+  const selectFromPanel = (id: string, moveMap: boolean) => {
+    if (id !== selectedId) {
+      focusTitleRef.current = true;
+      select(id, moveMap);
+    }
+  };
+
   return (
     <div className="app">
       <header className="header">
@@ -43,6 +58,7 @@ function Layout() {
               select(id);
             }}
             focus={focus}
+            onAreasInView={updateAreas}
           />
         </main>
         <aside
@@ -54,8 +70,16 @@ function Layout() {
           <div className="panel-content">
             <ObjectPanel
               selectedId={selectedId}
+              focusTitleRef={focusTitleRef}
               onSelect={(id) => {
-                select(id, true);
+                selectFromPanel(id, true);
+              }}
+            />
+            <AreasInView
+              areas={areas}
+              selectedId={selectedId}
+              onSelect={(id) => {
+                selectFromPanel(id, false);
               }}
             />
           </div>

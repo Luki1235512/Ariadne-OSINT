@@ -8,14 +8,18 @@ import { confidenceLabel, groupLinks } from "./links";
 interface ObjectPanelProps {
   selectedId: string | null;
   onSelect: (id: string) => void;
+  focusTitleRef: RefObject<boolean>;
 }
 
-export function ObjectPanel({ selectedId, onSelect }: ObjectPanelProps) {
+export function ObjectPanel({ selectedId, onSelect, focusTitleRef }: ObjectPanelProps) {
   const details = useObjectDetails(selectedId);
-  const focusTitleRef = useRef(false);
 
   if (selectedId === null) {
-    return <p className="panel-hint">Select an area on the map to see its details.</p>;
+    return (
+      <p className="panel-hint">
+        Select an area on the map, or in the list of areas in view below, to see its details.
+      </p>
+    );
   }
   if (details.isPending) {
     return (

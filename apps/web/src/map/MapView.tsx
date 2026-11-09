@@ -1,7 +1,13 @@
 import type { Map as MapLibreMap } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
-import { addAdminLayers, enableAdminInteraction, showSelection } from "./adminLayers";
+import {
+  addAdminLayers,
+  enableAdminInteraction,
+  readAreasInView,
+  showSelection,
+} from "./adminLayers";
 import { moveTo, type FocusTarget } from "./camera";
+import type { AreaInView } from "./inView";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 
@@ -12,9 +18,10 @@ interface MapViewProps {
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   focus: FocusTarget | null;
+  onAreasInView: (areas: AreaInView[]) => void;
 }
 
-export function MapView({ selectedId, onSelect, focus }: MapViewProps) {
+export function MapView({ selectedId, onSelect, focus, onAreasInView }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapLibreMap | null>(null);
 
@@ -22,6 +29,11 @@ export function MapView({ selectedId, onSelect, focus }: MapViewProps) {
   useEffect(() => {
     onSelectRef.current = onSelect;
   }, [onSelect]);
+
+  const onAreasRef = useRef(onAreasInView);
+  useEffect(() => {
+    onAreasRef.current = onAreasInView;
+  }, [onAreasInView]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -60,6 +72,10 @@ export function MapView({ selectedId, onSelect, focus }: MapViewProps) {
           onSelectRef.current(id);
         });
         setMap(instance);
+      });
+
+      instance.on("idle", () => {
+        onAreasRef.current(readAreasInView(instance));
       });
 
       instance.on("error", (event) => {

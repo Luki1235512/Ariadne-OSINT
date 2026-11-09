@@ -1,4 +1,5 @@
 import type { ExpressionSpecification, MapLayerMouseEvent, Map as MapLibreMap } from "maplibre-gl";
+import { areasInView, type AreaInView } from "./inView";
 
 const ADMIN_TILES_MAX_ZOOM = 14;
 
@@ -90,6 +91,13 @@ export function enableAdminInteraction(
     map.off("mouseleave", FILL_LAYER, onLeave);
     map.off("click", onClick);
   };
+}
+
+export function readAreasInView(map: MapLibreMap): AreaInView[] {
+  if (map.getLayer(FILL_LAYER) === undefined) {
+    return [];
+  }
+  return areasInView(map.queryRenderedFeatures({ layers: [FILL_LAYER] }));
 }
 
 export function showSelection(
