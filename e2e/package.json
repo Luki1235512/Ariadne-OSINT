@@ -1,0 +1,15 @@
+{
+  "name": "@ariadne/e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "tsx prepare.ts && playwright test"
+  },
+  "devDependencies": {
+    "@ariadne/db": "workspace:*",
+    "@ariadne/shared": "workspace:*",
+    "@playwright/test": "1.64.1",
+    "tsx": "4.23.15"
+  }
+}

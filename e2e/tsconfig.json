@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "../node_modules/.tmp/e2e.tsbuildinfo",
+    "types": ["node"]
+  },
+  "include": ["*.ts", "tests/**/*.ts"],
+  "references": [{ "path": "../packages/db" }, { "path": "../packages/shared" }]
+}
