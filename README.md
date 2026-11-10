@@ -87,18 +87,19 @@ Voivodeships, counties and municipalities with their boundaries, from the Państ
 
 ## Commands
 
-| Command                                          | What it does                                                |
-| ------------------------------------------------ | ----------------------------------------------------------- |
-| `pnpm dev`                                       | Runs the API and web app with reload on save                |
-| `pnpm typecheck`                                 | Type-checks and compiles all packages                       |
-| `pnpm lint`                                      | Runs ESLint                                                 |
-| `pnpm format`                                    | Formats all files with Prettier                             |
-| `pnpm format:check`                              | Checks formatting without changing files                    |
-| `pnpm test`                                      | Builds, then runs all tests once                            |
-| `pnpm test:watch`                                | Reruns tests on every save                                  |
-| `pnpm test:integration`                          | Runs the database tests; needs `docker compose up -d db`    |
-| `pnpm db:migrate`                                | Applies new database migrations to the development database |
-| `pnpm build`                                     | Production build of all packages                            |
-| `pnpm clean`                                     | Removes all build output; use when builds behave oddly      |
-| `pnpm ingest:prg:convert <folder>`               | Converts PRG shapefiles to GeoJSON lines                    |
-| `pnpm ingest:prg <folder> --retrieved-on <date>` | Imports converted PRG files into the database               |
+| Command                                          | What it does                                                                                                                                |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                                       | Runs the API and web app with reload on save                                                                                                |
+| `pnpm typecheck`                                 | Type-checks and compiles all packages                                                                                                       |
+| `pnpm lint`                                      | Runs ESLint                                                                                                                                 |
+| `pnpm format`                                    | Formats all files with Prettier                                                                                                             |
+| `pnpm format:check`                              | Checks formatting without changing files                                                                                                    |
+| `pnpm test`                                      | Builds, then runs the unit tests once                                                                                                       |
+| `pnpm test:watch`                                | Reruns tests on every save                                                                                                                  |
+| `pnpm test:integration`                          | Runs the database tests; needs `docker compose up -d db`                                                                                    |
+| `pnpm test:e2e`                                  | Builds, then runs the browser tests; needs `docker compose up -d db` and `pnpm --filter @ariadne/e2e exec playwright install chromium` once |
+| `pnpm db:migrate`                                | Applies new database migrations to the development database                                                                                 |
+| `pnpm build`                                     | Production build of all packages                                                                                                            |
+| `pnpm clean`                                     | Removes all build output; use when builds behave oddly                                                                                      |
+| `pnpm ingest:prg:convert <folder>`               | Converts PRG shapefiles to GeoJSON lines                                                                                                    |
+| `pnpm ingest:prg <folder> --retrieved-on <date>` | Imports converted PRG files into the database                                                                                               |
