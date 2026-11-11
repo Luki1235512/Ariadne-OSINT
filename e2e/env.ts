@@ -4,8 +4,7 @@ try {
   // No .env file: rely on the environment (CI sets the variables directly).
 }
 
-export const API_PORT = 3100;
-export const WEB_PORT = 4173;
+export const PORT = 3100;
 
 export function e2eDatabaseUrl(): string {
   const url = process.env.E2E_DATABASE_URL;

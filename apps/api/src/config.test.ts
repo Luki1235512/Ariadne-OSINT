@@ -48,6 +48,14 @@ describe("loadConfig", () => {
     );
   });
 
+  it("accepts the web app folder only as an absolute path", () => {
+    expect(loadConfig({ DATABASE_URL, WEB_DIST_DIR: "/app/web" }).WEB_DIST_DIR).toBe("/app/web");
+    expect(loadConfig({ DATABASE_URL }).WEB_DIST_DIR).toBeUndefined();
+    expect(() => loadConfig({ DATABASE_URL, WEB_DIST_DIR: "apps/web/dist" })).toThrow(
+      /WEB_DIST_DIR/,
+    );
+  });
+
   it("rejects an invalid number of proxy hops", () => {
     expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "-1" })).toThrow(/TRUST_PROXY_HOPS/);
     expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "all" })).toThrow(/TRUST_PROXY_HOPS/);
