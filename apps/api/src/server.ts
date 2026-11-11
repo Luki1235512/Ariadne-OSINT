@@ -3,6 +3,7 @@ import { ping, type Db } from "@ariadne/db";
 import type { Config } from "./config.js";
 import { loggableError, registerErrorHandlers, sendError } from "./http/errors.js";
 import { registerRateLimit } from "./http/rate-limits.js";
+import { requestLogFields } from "./http/request-log.js";
 import { registerSecurityHeaders } from "./http/security-headers.js";
 import { registerWebApp } from "./http/web-app.js";
 import { registerObjectRoutes } from "./routes/objects.js";
@@ -30,10 +31,7 @@ export function buildServer({ config, db }: ServerOptions): FastifyInstance {
     logger: {
       level: config.LOG_LEVEL,
       serializers: {
-        req: (request: { method: string; url: string }) => ({
-          method: request.method,
-          path: request.url.split("?", 1)[0],
-        }),
+        req: requestLogFields,
       },
     },
   });
