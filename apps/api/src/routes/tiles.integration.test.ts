@@ -1,3 +1,4 @@
+import { gunzipSync } from "node:zlib";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { upsertBoundary, upsertObject, upsertSource } from "@ariadne/db";
 import { createTestDb, resetData } from "@ariadne/db/test-support";
@@ -61,6 +62,21 @@ describe("GET /api/tiles/admin/{z}/{x}/{y}", () => {
     expect(response.headers["content-type"]).toBe("application/vnd.mapbox-vector-tile");
     expect(response.headers["cache-control"]).toBe("public, max-age=3600");
     expect(response.rawPayload.length).toBeGreaterThan(0);
+  });
+
+  it("compresses the tile when the client accepts gzip", async () => {
+    const url = "/api/tiles/admin/9/285/168";
+    const plain = await app.inject({ method: "GET", url });
+    const response = await app.inject({
+      method: "GET",
+      url,
+      headers: { "accept-encoding": "gzip, deflate, br" },
+    });
+
+    expect(plain.headers["content-encoding"]).toBeUndefined();
+    expect(response.headers["content-encoding"]).toBe("gzip");
+    expect(response.headers.vary).toBe("accept-encoding");
+    expect(gunzipSync(response.rawPayload).equals(plain.rawPayload)).toBe(true);
   });
 
   it("returns 204 for a tile with no data at that zoom level", async () => {
