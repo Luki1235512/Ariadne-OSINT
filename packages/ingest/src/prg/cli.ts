@@ -1,7 +1,7 @@
 import { basename } from "node:path";
 import { parseArgs } from "node:util";
 import { z } from "zod";
-import { createDb } from "@ariadne/db";
+import { CaCertSchema, createDb } from "@ariadne/db";
 import { importPrg, type Counts, type ImportReport } from "./import.js";
 
 const USAGE = [
@@ -21,19 +21,25 @@ const Args = z.object({
   release: z.iso.date({ message: "The folder name must be the release date, YYYY-MM-DD" }),
   retrievedOn: z.iso.date({ message: "--retrieved-on must be a date, YYYY-MM-DD" }),
   databaseUrl: z.string().min(1, "DATABASE_URL is not set. Copy .env.example to .env."),
+  caCert: CaCertSchema.optional(),
 });
 const args = Args.safeParse({
   dir,
   release: basename(dir),
   retrievedOn: values["retrieved-on"],
   databaseUrl: process.env.DATABASE_URL ?? "",
+  caCert: process.env.DATABASE_CA_CERT,
 });
 if (!args.success) {
   console.error(`${z.prettifyError(args.error)}\n\n${USAGE}`);
   process.exit(1);
 }
 
-const db = createDb({ connectionString: args.data.databaseUrl, statementTimeoutMs: 60_000 });
+const db = createDb({
+  connectionString: args.data.databaseUrl,
+  statementTimeoutMs: 60_000,
+  ...(args.data.caCert === undefined ? {} : { caCert: args.data.caCert }),
+});
 const started = Date.now();
 let report: ImportReport;
 try {

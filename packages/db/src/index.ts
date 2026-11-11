@@ -1,4 +1,10 @@
-export { createDb, createPool, type ConnectionOptions } from "./connection.js";
+export {
+  CaCertSchema,
+  createDb,
+  createPool,
+  tlsOptions,
+  type ConnectionOptions,
+} from "./connection.js";
 export { DbWriteError, type DbErrorCode } from "./errors.js";
 export { ping } from "./health.js";
 export {

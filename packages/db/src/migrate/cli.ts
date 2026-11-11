@@ -1,14 +1,24 @@
 import pg from "pg";
 import { z } from "zod";
+import { CaCertSchema, tlsOptions } from "../connection.js";
 import { migrate, readMigrations } from "./migrate.js";
 
-const env = z.object({ DATABASE_URL: z.string().min(1) }).safeParse(process.env);
+const env = z
+  .object({
+    DATABASE_URL: z.string().min(1, "DATABASE_URL is not set. Copy .env.example to .env."),
+    DATABASE_CA_CERT: CaCertSchema.optional(),
+  })
+  .safeParse(process.env);
 if (!env.success) {
-  console.error("DATABASE_URL is not set. Copy .env.example to .env and fill it in.");
+  console.error(z.prettifyError(env.error));
   process.exit(1);
 }
 
-const client = new pg.Client({ connectionString: env.data.DATABASE_URL });
+const ssl = tlsOptions(env.data.DATABASE_CA_CERT);
+const client = new pg.Client({
+  connectionString: env.data.DATABASE_URL,
+  ...(ssl === undefined ? {} : { ssl }),
+});
 await client.connect();
 try {
   const applied = await migrate(client, await readMigrations());
