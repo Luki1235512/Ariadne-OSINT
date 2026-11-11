@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { adminAreaTile, type Db } from "@ariadne/db";
+import { acceptsGzip, gzipBuffer } from "../http/compression.js";
 import { sendError } from "../http/errors.js";
 import { RATE_LIMITS, routeLimit } from "../http/rate-limits.js";
 import { NoQuery } from "../http/validation.js";
@@ -56,7 +57,11 @@ export function registerTileRoutes(app: FastifyInstance, db: Db): void {
       if (tile.length === 0) {
         return reply.code(204).send();
       }
-      return reply.type("application/vnd.mapbox-vector-tile").send(tile);
+      reply.type("application/vnd.mapbox-vector-tile").header("vary", "accept-encoding");
+      if (acceptsGzip(request.headers["accept-encoding"])) {
+        return reply.header("content-encoding", "gzip").send(await gzipBuffer(tile));
+      }
+      return reply.send(tile);
     },
   );
 }
