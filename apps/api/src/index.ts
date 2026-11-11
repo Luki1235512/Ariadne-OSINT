@@ -3,7 +3,10 @@ import { loadConfig } from "./config.js";
 import { buildServer } from "./server.js";
 
 const config = loadConfig(process.env);
-const db = createDb({ connectionString: config.DATABASE_URL });
+const db = createDb({
+  connectionString: config.DATABASE_URL,
+  ...(config.DATABASE_CA_CERT === undefined ? {} : { caCert: config.DATABASE_CA_CERT }),
+});
 const app = buildServer({ config, db });
 
 try {

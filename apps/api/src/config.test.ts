@@ -40,6 +40,14 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ DATABASE_URL, PORT: "not-a-number" })).toThrow(/PORT/);
   });
 
+  it("reads an optional database certificate and rejects anything else", () => {
+    const cert = "-----BEGIN CERTIFICATE-----\nMIIBfake\n-----END CERTIFICATE-----";
+    expect(loadConfig({ DATABASE_URL, DATABASE_CA_CERT: cert }).DATABASE_CA_CERT).toBe(cert);
+    expect(() => loadConfig({ DATABASE_URL, DATABASE_CA_CERT: "ca.crt" })).toThrow(
+      /DATABASE_CA_CERT/,
+    );
+  });
+
   it("rejects an invalid number of proxy hops", () => {
     expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "-1" })).toThrow(/TRUST_PROXY_HOPS/);
     expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "all" })).toThrow(/TRUST_PROXY_HOPS/);
