@@ -12,10 +12,17 @@ RUN pnpm install --frozen-lockfile
 
 COPY tsconfig.base.json ./
 COPY packages/shared packages/shared
+COPY packages/db packages/db
+COPY apps/api apps/api
 COPY apps/web apps/web
-RUN pnpm exec tsc -b apps/web && pnpm --filter @ariadne/web build
+RUN pnpm exec tsc -b apps/api apps/web && pnpm --filter @ariadne/web build
+RUN pnpm --filter @ariadne/api deploy --prod /out
 
-FROM nginxinc/nginx-unprivileged:1.31-alpine
-COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /repo/apps/web/dist /usr/share/nginx/html
-EXPOSE 8080
+FROM node:26-trixie-slim
+ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000 WEB_DIST_DIR=/app/web
+WORKDIR /app
+COPY --from=build /out ./
+COPY --from=build /repo/apps/web/dist ./web
+USER node
+EXPOSE 3000
+CMD ["node", "dist/index.js"]

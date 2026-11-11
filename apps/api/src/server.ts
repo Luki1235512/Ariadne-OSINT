@@ -3,12 +3,14 @@ import { ping, type Db } from "@ariadne/db";
 import type { Config } from "./config.js";
 import { loggableError, registerErrorHandlers, sendError } from "./http/errors.js";
 import { registerRateLimit } from "./http/rate-limits.js";
+import { registerSecurityHeaders } from "./http/security-headers.js";
+import { registerWebApp } from "./http/web-app.js";
 import { registerObjectRoutes } from "./routes/objects.js";
 import { registerSearchRoutes } from "./routes/search.js";
 import { registerTileRoutes } from "./routes/tiles.js";
 
 export interface ServerOptions {
-  config: Pick<Config, "LOG_LEVEL"> & Partial<Pick<Config, "TRUST_PROXY_HOPS">>;
+  config: Pick<Config, "LOG_LEVEL"> & Partial<Pick<Config, "TRUST_PROXY_HOPS" | "WEB_DIST_DIR">>;
   db: Db;
 }
 
@@ -36,6 +38,8 @@ export function buildServer({ config, db }: ServerOptions): FastifyInstance {
     },
   });
 
+  registerSecurityHeaders(app);
+
   app.get("/api/health", (_request, reply) => reply.send({ status: "ok" }));
 
   app.get("/api/ready", async (request, reply) => {
@@ -53,6 +57,9 @@ export function buildServer({ config, db }: ServerOptions): FastifyInstance {
     registerObjectRoutes(api, db);
     registerSearchRoutes(api, db);
     registerTileRoutes(api, db);
+    if (config.WEB_DIST_DIR !== undefined) {
+      await registerWebApp(api, config.WEB_DIST_DIR);
+    }
   });
 
   registerErrorHandlers(app);
