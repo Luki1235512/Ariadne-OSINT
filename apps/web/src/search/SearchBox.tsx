@@ -3,6 +3,7 @@ import type { SearchResult } from "@ariadne/shared";
 import { MIN_SEARCH_LENGTH, useSearch } from "../data/queries";
 import { moveActive } from "./keyboard";
 import { useDebouncedValue } from "./useDebouncedValue";
+import "./search.css";
 
 interface SearchBoxProps {
   onSelect: (id: string) => void;

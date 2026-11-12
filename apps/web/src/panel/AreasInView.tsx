@@ -1,4 +1,5 @@
 import type { AreaInView } from "../map/inView";
+import "./panel.css";
 
 const MAX_SHOWN = 200;
 
