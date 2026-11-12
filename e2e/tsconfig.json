@@ -6,6 +6,6 @@
     "tsBuildInfoFile": "../node_modules/.tmp/e2e.tsbuildinfo",
     "types": ["node"]
   },
-  "include": ["*.ts", "tests/**/*.ts"],
+  "include": ["*.ts", "tests/**/*.ts", "smoke/**/*.ts"],
   "references": [{ "path": "../packages/db" }, { "path": "../packages/shared" }]
 }

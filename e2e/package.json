@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "tsx prepare.ts && playwright test"
+    "test": "tsx prepare.ts && playwright test",
+    "smoke": "playwright test -c playwright.smoke.config.ts"
   },
   "devDependencies": {
     "@ariadne/db": "workspace:*",
