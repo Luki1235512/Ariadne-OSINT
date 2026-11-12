@@ -3,8 +3,8 @@ import { z } from "zod";
 import { adminAreaTile, type Db } from "@ariadne/db";
 import { acceptsGzip, gzipBuffer } from "../http/compression.js";
 import { sendError } from "../http/errors.js";
-import { RATE_LIMITS, routeLimit } from "../http/rate-limits.js";
 import { NoQuery } from "../http/validation.js";
+import { RATE_LIMITS, routeLimit } from "../security/rate-limits.js";
 
 export const MAX_TILE_ZOOM = 14;
 

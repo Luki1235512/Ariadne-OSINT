@@ -3,7 +3,7 @@ import { z } from "zod";
 import { MAX_SEARCH_RESULTS, MIN_SEARCH_LENGTH, searchObjects, type Db } from "@ariadne/db";
 import type { SearchResponse } from "@ariadne/shared";
 import { sendError } from "../http/errors.js";
-import { RATE_LIMITS, routeLimit } from "../http/rate-limits.js";
+import { RATE_LIMITS, routeLimit } from "../security/rate-limits.js";
 
 export const MAX_QUERY_LENGTH = 100;
 

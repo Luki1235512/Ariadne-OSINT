@@ -2,13 +2,13 @@ import Fastify, { type FastifyInstance } from "fastify";
 import { ping, type Db } from "@ariadne/db";
 import type { Config } from "./config.js";
 import { loggableError, registerErrorHandlers, sendError } from "./http/errors.js";
-import { registerRateLimit } from "./http/rate-limits.js";
 import { requestLogFields } from "./http/request-log.js";
-import { registerSecurityHeaders } from "./http/security-headers.js";
-import { registerWebApp } from "./http/web-app.js";
 import { registerObjectRoutes } from "./routes/objects.js";
 import { registerSearchRoutes } from "./routes/search.js";
 import { registerTileRoutes } from "./routes/tiles.js";
+import { registerWebApp } from "./routes/web-app.js";
+import { registerRateLimit } from "./security/rate-limits.js";
+import { registerSecurityHeaders } from "./security/security-headers.js";
 
 export interface ServerOptions {
   config: Pick<Config, "LOG_LEVEL"> & Partial<Pick<Config, "TRUST_PROXY_HOPS" | "WEB_DIST_DIR">>;
