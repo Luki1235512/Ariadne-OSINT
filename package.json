@@ -17,6 +17,7 @@
     "test:integration": "tsc -b && vitest run --project integration",
     "test:watch": "vitest",
     "test:e2e": "pnpm build && pnpm --filter @ariadne/e2e test",
+    "smoke": "pnpm --filter @ariadne/e2e smoke",
     "clean": "tsc -b --clean",
     "db:migrate": "tsc -b && node --env-file-if-exists=.env packages/db/dist/migrate/cli.js",
     "ingest:prg:convert": "bash packages/ingest/scripts/prg-convert.sh",
