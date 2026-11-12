@@ -1,6 +1,6 @@
 import { useId, useState } from "react";
 import type { SearchResult } from "@ariadne/shared";
-import { MIN_SEARCH_LENGTH, useSearch } from "../queries";
+import { MIN_SEARCH_LENGTH, useSearch } from "../data/queries";
 import { moveActive } from "./keyboard";
 import { useDebouncedValue } from "./useDebouncedValue";
 

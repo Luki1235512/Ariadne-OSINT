@@ -1,11 +1,11 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useCallback, useRef, useState } from "react";
+import { createQueryClient, useObjectDetails } from "./data/queries";
 import { toFocusTarget } from "./map/camera";
 import { sameAreas, type AreaInView } from "./map/inView";
 import { MapView } from "./map/MapView";
 import { AreasInView } from "./panel/AreasInView";
 import { ObjectPanel } from "./panel/ObjectPanel";
-import { createQueryClient, useObjectDetails } from "./queries";
 import { SearchBox } from "./search/SearchBox";
 import { useSelection } from "./selection";
 
