@@ -16,7 +16,7 @@ export {
 export { getObjectDetails, MAX_LINKS_PER_RESPONSE } from "./read/object-details.js";
 export { escapeLike, MAX_SEARCH_RESULTS, MIN_SEARCH_LENGTH, searchObjects } from "./read/search.js";
 export { adminAreaTile, type AdminTileRequest } from "./read/tiles.js";
-export type { Database, Db } from "./schema.js";
+export type { Database, Db } from "./schema/tables.js";
 export {
   removeObject,
   upsertBoundary,
@@ -24,4 +24,4 @@ export {
   upsertObject,
   upsertSource,
   type WriteResult,
-} from "./write/write.js";
+} from "./write/index.js";

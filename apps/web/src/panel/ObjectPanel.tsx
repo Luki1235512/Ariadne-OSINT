@@ -1,9 +1,10 @@
 import { useEffect, useRef, type RefObject } from "react";
 import type { ObjectDetails, SourceSummary } from "@ariadne/shared";
-import { ApiError } from "../api";
-import { useObjectDetails } from "../queries";
+import { ApiError } from "../data/api";
+import { useObjectDetails } from "../data/queries";
 import { flattenProperties, formatDate, safeUrl } from "./format";
 import { confidenceLabel, groupLinks } from "./links";
+import "./panel.css";
 
 interface ObjectPanelProps {
   selectedId: string | null;

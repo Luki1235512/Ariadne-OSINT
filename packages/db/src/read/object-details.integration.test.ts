@@ -7,7 +7,7 @@ import {
   upsertLink,
   upsertObject,
   upsertSource,
-} from "../write/write.js";
+} from "../write/index.js";
 import { getObjectDetails } from "./object-details.js";
 
 const db = createTestDb();

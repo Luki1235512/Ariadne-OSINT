@@ -3,7 +3,7 @@ import { PbfReader } from "pbf";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { AreaGeometry } from "@ariadne/shared";
 import { createTestDb, resetData } from "../test-support/index.js";
-import { upsertBoundary, upsertObject, upsertSource } from "../write/write.js";
+import { upsertBoundary, upsertObject, upsertSource } from "../write/index.js";
 import { adminAreaTile } from "./tiles.js";
 
 const db = createTestDb();

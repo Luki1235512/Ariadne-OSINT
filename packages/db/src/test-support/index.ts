@@ -2,7 +2,7 @@ import { sql, type Kysely } from "kysely";
 import pg from "pg";
 import { createDb } from "../connection.js";
 import { migrate, readMigrations } from "../migrate/migrate.js";
-import type { Database } from "../schema.js";
+import type { Database } from "../schema/tables.js";
 
 export function testDatabaseUrl(): string {
   const url = process.env.TEST_DATABASE_URL;

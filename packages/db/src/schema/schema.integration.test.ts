@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, it } from "vitest";
 import { LINK_TYPES, OBJECT_TYPES } from "@ariadne/shared";
-import { createTestDb } from "./test-support/index.js";
+import { createTestDb } from "../test-support/index.js";
 
 describe("ontology types in the database", () => {
   const db = createTestDb();

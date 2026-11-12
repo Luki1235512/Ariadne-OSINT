@@ -1,6 +1,6 @@
 import { sql } from "kysely";
 import { afterAll, describe, expect, it } from "vitest";
-import { createTestDb } from "./test-support/index.js";
+import { createTestDb } from "../test-support/index.js";
 
 const db = createTestDb();
 

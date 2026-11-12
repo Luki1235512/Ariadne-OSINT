@@ -1,7 +1,7 @@
 import { Kysely, PostgresDialect } from "kysely";
 import pg from "pg";
 import { z } from "zod";
-import type { Database } from "./schema.js";
+import type { Database } from "./schema/tables.js";
 
 export interface ConnectionOptions {
   connectionString: string;

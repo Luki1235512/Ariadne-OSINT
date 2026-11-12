@@ -3,8 +3,8 @@ import { z } from "zod";
 import { getObjectDetails, type Db } from "@ariadne/db";
 import { ObjectId } from "@ariadne/shared";
 import { sendError } from "../http/errors.js";
-import { RATE_LIMITS, routeLimit } from "../http/rate-limits.js";
 import { NoQuery } from "../http/validation.js";
+import { RATE_LIMITS, routeLimit } from "../security/rate-limits.js";
 
 const ObjectParams = z.strictObject({ id: ObjectId });
 

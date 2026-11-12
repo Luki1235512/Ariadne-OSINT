@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createTestDb, resetData } from "../test-support/index.js";
-import { upsertLink, upsertObject, upsertSource } from "../write/write.js";
+import { upsertLink, upsertObject, upsertSource } from "../write/index.js";
 import { searchObjects } from "./search.js";
 
 const db = createTestDb();
