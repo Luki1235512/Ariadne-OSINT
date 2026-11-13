@@ -36,3 +36,10 @@ export const BoundaryInput = z.strictObject({
   geometry: AreaGeometry,
 });
 export type BoundaryInput = z.infer<typeof BoundaryInput>;
+
+export const PointInput = z.strictObject({
+  objectId: ObjectId,
+  sourceId: SourceId,
+  position: Position,
+});
+export type PointInput = z.infer<typeof PointInput>;

@@ -73,6 +73,6 @@ export function createTestDb(): Kysely<Database> {
 
 export async function resetData(db: Kysely<Database>): Promise<void> {
   await sql`
-    TRUNCATE objects, links, sources, object_sources, link_sources, suppressions, object_geometries
+    TRUNCATE objects, links, sources, object_sources, link_sources, suppressions, object_geometries, object_times
   `.execute(db);
 }

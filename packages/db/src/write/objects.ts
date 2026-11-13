@@ -69,9 +69,48 @@ export async function upsertObject(
       result = update.numUpdatedRows > 0n ? "updated" : "unchanged";
     }
 
+    if (object.type === "Event") {
+      const timesChanged = await writeTimes(trx, object.id, object.startsAt, object.endsAt);
+      if (timesChanged && result === "unchanged") {
+        await trx
+          .updateTable("objects")
+          .set({ updated_at: new Date().toISOString() })
+          .where("id", "=", object.id)
+          .execute();
+        result = "updated";
+      }
+    }
+
     await writeSourceReferences(trx, "object_sources", object.id, sources);
     return result;
   });
+}
+
+async function writeTimes(
+  db: Kysely<Database>,
+  objectId: string,
+  startsAt: string,
+  endsAt: string | null,
+): Promise<boolean> {
+  const written = await db
+    .insertInto("object_times")
+    .values({ object_id: objectId, starts_at: startsAt, ends_at: endsAt })
+    .onConflict((conflict) =>
+      conflict
+        .column("object_id")
+        .doUpdateSet((eb) => ({
+          starts_at: eb.ref("excluded.starts_at"),
+          ends_at: eb.ref("excluded.ends_at"),
+        }))
+        .where((eb) =>
+          eb.or([
+            eb("object_times.starts_at", "is distinct from", eb.ref("excluded.starts_at")),
+            eb("object_times.ends_at", "is distinct from", eb.ref("excluded.ends_at")),
+          ]),
+        ),
+    )
+    .executeTakeFirst();
+  return (written.numInsertedOrUpdatedRows ?? 0n) > 0n;
 }
 
 export async function removeObject(
