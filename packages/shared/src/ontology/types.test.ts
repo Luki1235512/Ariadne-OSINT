@@ -97,10 +97,59 @@ describe("LinkInput", () => {
 
 describe("type lists", () => {
   it("lists every object type", () => {
-    expect(OBJECT_TYPES).toEqual(["Location"]);
+    expect(OBJECT_TYPES).toEqual(["Location", "Event"]);
   });
 
   it("defines endpoints for every link type", () => {
     expect(Object.keys(LINK_ENDPOINTS).sort()).toEqual([...LINK_TYPES].sort());
+  });
+});
+
+const event = {
+  id: "gdelt:report:abc123",
+  type: "Event",
+  countryCode: "LV",
+  displayName: "Trzy drony wleciały nad Łotwę. NATO poderwało myśliwce",
+  startsAt: "2026-11-12T03:00:00Z",
+  endsAt: null,
+  properties: {
+    kind: "media_report",
+    category: "military",
+    official: false,
+    url: "https://wiadomosci.onet.pl/swiat/trzy-drony-wlecialy-nad-lotwe/bd9769j",
+    publisher: "wiadomosci.onet.pl",
+    locationPrecision: "country",
+  },
+};
+
+describe("EventInput", () => {
+  it("accepts a valid media report", () => {
+    expect(ObjectInput.safeParse(event).success).toBe(true);
+  });
+
+  it("accepts an event with an end after its start", () => {
+    expect(ObjectInput.safeParse({ ...event, endsAt: "2026-11-12T04:00:00+01:00" }).success).toBe(
+      true,
+    );
+  });
+
+  it("rejects an end before the start", () => {
+    expect(ObjectInput.safeParse({ ...event, endsAt: "2026-11-12T02:59:59Z" }).success).toBe(false);
+  });
+
+  it("rejects a time without a time zone", () => {
+    expect(ObjectInput.safeParse({ ...event, startsAt: "2026-11-12T03:00:00" }).success).toBe(
+      false,
+    );
+  });
+
+  it("rejects a link that is not http or https", () => {
+    const properties = { ...event.properties, url: "javascript:alert(1)" };
+    expect(ObjectInput.safeParse({ ...event, properties }).success).toBe(false);
+  });
+
+  it("rejects an unknown category", () => {
+    const properties = { ...event.properties, category: "gossip" };
+    expect(ObjectInput.safeParse({ ...event, properties }).success).toBe(false);
   });
 });

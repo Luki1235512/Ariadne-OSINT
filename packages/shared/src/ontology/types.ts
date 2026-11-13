@@ -52,7 +52,46 @@ export const LocationInput = z
     },
   );
 
-const objectSchemas = [LocationInput] as const;
+export const Timestamp = z.iso.datetime({ offset: true });
+
+export const EVENT_CATEGORIES = [
+  "armed_conflict",
+  "military",
+  "terrorism",
+  "protest",
+  "politics",
+] as const;
+
+export const EventProperties = z.strictObject({
+  kind: z.enum(["media_report"]),
+  category: z.enum(EVENT_CATEGORIES),
+  official: z.boolean(),
+  url: z
+    .url({ protocol: /^https?$/ })
+    .max(2000)
+    .nullable(),
+  publisher: z.string().trim().min(1).max(200).nullable(),
+  locationPrecision: z.enum(["country", "region", "city"]).nullable(),
+});
+export type EventProperties = z.infer<typeof EventProperties>;
+
+export const EventInput = z
+  .strictObject({
+    ...objectBase,
+    type: z.literal("Event"),
+    properties: EventProperties,
+    startsAt: Timestamp,
+    endsAt: Timestamp.nullable(),
+  })
+  .refine(
+    (event) => event.endsAt === null || Date.parse(event.endsAt) >= Date.parse(event.startsAt),
+    {
+      message: "endsAt must not be before startsAt",
+      path: ["endsAt"],
+    },
+  );
+
+const objectSchemas = [LocationInput, EventInput] as const;
 export const ObjectInput = z.discriminatedUnion("type", objectSchemas);
 export type ObjectInput = z.infer<typeof ObjectInput>;
 export type ObjectType = ObjectInput["type"];

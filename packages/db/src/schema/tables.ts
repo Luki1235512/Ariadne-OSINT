@@ -72,6 +72,12 @@ export interface ObjectGeometriesTable {
   updated_at: Timestamp;
 }
 
+export interface ObjectTimesTable {
+  object_id: string;
+  starts_at: ColumnType<Date, string, string>;
+  ends_at: ColumnType<Date | null, string | null, string | null>;
+}
+
 export interface Database {
   object_types: ObjectTypesTable;
   link_types: LinkTypesTable;
@@ -82,6 +88,7 @@ export interface Database {
   link_sources: LinkSourcesTable;
   suppressions: SuppressionsTable;
   object_geometries: ObjectGeometriesTable;
+  object_times: ObjectTimesTable;
 }
 
 export type Db = Kysely<Database>;

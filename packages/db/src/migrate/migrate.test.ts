@@ -30,6 +30,7 @@ describe("readMigrations", () => {
       "0002_location_type",
       "0003_object_geometries",
       "0004_search",
+      "0005_events",
     ]);
   });
 
