@@ -1,5 +1,5 @@
-import type { SourceInput } from "@ariadne/shared";
 import type { z } from "zod";
+import type { SourceInput } from "@ariadne/shared";
 
 export function prgSource(release: string, retrievedOn: string): z.input<typeof SourceInput> {
   return {

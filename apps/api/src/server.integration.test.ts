@@ -1,7 +1,7 @@
-import { createTestDb } from "@ariadne/db/test-support";
 import { afterAll, describe, expect, it } from "vitest";
-import { buildServer } from "./server.js";
 import { createDb } from "@ariadne/db";
+import { createTestDb } from "@ariadne/db/test-support";
+import { buildServer } from "./server.js";
 
 describe("GET /api/ready", () => {
   const db = createTestDb();

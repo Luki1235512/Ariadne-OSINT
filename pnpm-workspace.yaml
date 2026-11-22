@@ -1,6 +1,7 @@
 packages:
   - "apps/*"
   - "packages/*"
+  - "e2e"
 
 minimumReleaseAge: 10080
 
@@ -11,7 +12,7 @@ savePrefix: ""
 allowBuilds:
   esbuild: false
 
-# Security fixes younger than minimumReleaseAge. Exact versions only; remove once they are 7 days old.
-minimumReleaseAgeExclude:
-  - fast-uri@3.1.9
-  - fast-uri@4.2.3
+auditConfig:
+  ignoreGhsas:
+    # Remove when ESLint's dependencies move to minimatch 11. Reviewed 2026-11-02.
+    - GHSA-g3hv-75wg-m249

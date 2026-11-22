@@ -1,5 +1,5 @@
-import { createDb } from "@ariadne/db";
 import { afterAll, describe, expect, it } from "vitest";
+import { createDb } from "@ariadne/db";
 import { buildServer } from "./server.js";
 
 const db = createDb({ connectionString: "postgres://unused@127.0.0.1:1/unused" });
@@ -22,5 +22,25 @@ describe("GET /api/health", () => {
     const response = await app.inject({ method: "GET", url: "/api/nope" });
 
     expect(response.statusCode).toBe(404);
+    expect(response.json()).toEqual({ error: { code: "NOT_FOUND", message: "Not found" } });
+  });
+});
+
+describe("unexpected errors", () => {
+  it("return 500 with an error code and no details", async () => {
+    const broken = buildServer({ config: { LOG_LEVEL: "silent" }, db });
+    broken.get("/api/broken", () => {
+      throw new Error("secret detail");
+    });
+    try {
+      const response = await broken.inject({ method: "GET", url: "/api/broken" });
+
+      expect(response.statusCode).toBe(500);
+      expect(response.json()).toEqual({
+        error: { code: "INTERNAL_ERROR", message: "Internal error" },
+      });
+    } finally {
+      await broken.close();
+    }
   });
 });

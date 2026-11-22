@@ -1,6 +1,8 @@
 # Ariadne-OSINT
 
-Web app for exploring connected public data.
+A web app that shows what is happening now, on a map.
+
+Live: https://ariadne-osint.onrender.com
 
 ## Requirements
 
@@ -87,18 +89,45 @@ Voivodeships, counties and municipalities with their boundaries, from the Państ
 
 ## Commands
 
-| Command                                          | What it does                                                |
-| ------------------------------------------------ | ----------------------------------------------------------- |
-| `pnpm dev`                                       | Runs the API and web app with reload on save                |
-| `pnpm typecheck`                                 | Type-checks and compiles all packages                       |
-| `pnpm lint`                                      | Runs ESLint                                                 |
-| `pnpm format`                                    | Formats all files with Prettier                             |
-| `pnpm format:check`                              | Checks formatting without changing files                    |
-| `pnpm test`                                      | Builds, then runs all tests once                            |
-| `pnpm test:watch`                                | Reruns tests on every save                                  |
-| `pnpm test:integration`                          | Runs the database tests; needs `docker compose up -d db`    |
-| `pnpm db:migrate`                                | Applies new database migrations to the development database |
-| `pnpm build`                                     | Production build of all packages                            |
-| `pnpm clean`                                     | Removes all build output; use when builds behave oddly      |
-| `pnpm ingest:prg:convert <folder>`               | Converts PRG shapefiles to GeoJSON lines                    |
-| `pnpm ingest:prg <folder> --retrieved-on <date>` | Imports converted PRG files into the database               |
+| Command                                          | What it does                                                                                                                                |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                                       | Runs the API and web app with reload on save                                                                                                |
+| `pnpm typecheck`                                 | Type-checks and compiles all packages                                                                                                       |
+| `pnpm lint`                                      | Runs ESLint                                                                                                                                 |
+| `pnpm format`                                    | Formats all files with Prettier                                                                                                             |
+| `pnpm format:check`                              | Checks formatting without changing files                                                                                                    |
+| `pnpm test`                                      | Builds, then runs the unit tests once                                                                                                       |
+| `pnpm test:watch`                                | Reruns tests on every save                                                                                                                  |
+| `pnpm test:integration`                          | Runs the database tests; needs `docker compose up -d db`                                                                                    |
+| `pnpm test:e2e`                                  | Builds, then runs the browser tests; needs `docker compose up -d db` and `pnpm --filter @ariadne/e2e exec playwright install chromium` once |
+| `pnpm smoke`                                     | Checks the live site (or `SMOKE_URL`) in a real browser; run after every deploy                                                             |
+| `pnpm db:migrate`                                | Applies new database migrations to the database in DATABASE_URL                                                                             |
+| `pnpm build`                                     | Production build of all packages                                                                                                            |
+| `pnpm clean`                                     | Removes all build output; use when builds behave oddly                                                                                      |
+| `pnpm ingest:prg:convert <folder>`               | Converts PRG shapefiles to GeoJSON lines                                                                                                    |
+| `pnpm ingest:prg <folder> --retrieved-on <date>` | Imports converted PRG files into the database                                                                                               |
+
+## Deployment
+
+The public site runs on free plans:
+
+| Part     | Where                                                                                                 | Limits that matter                                         |
+| -------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| App      | Render web service, Frankfurt. One container built from `Dockerfile`: the API also serves the web app | 750 instance hours a month, 5 GB outgoing traffic a month. |
+| Database | Supabase, Frankfurt                                                                                   | 500 MB, 5 GB egress                                        |
+
+### How a deploy works
+
+Render builds and deploys `main` on every push. Its health check calls `/api/ready`, so a new version only takes over once it can reach the database.
+
+### Database changes
+
+The free plan has no pre-deploy step, so migrations run from the development machine, **before** merging the code that needs them.
+
+Use a separate terminal, so production and development are never mixed up:
+
+```bash
+set -a; . ~/.config/ariadne/supabase.env; set +a
+export DATABASE_CA_CERT="$(cat ~/.config/ariadne/supabase-ca.crt)"
+pnpm db:migrate
+```

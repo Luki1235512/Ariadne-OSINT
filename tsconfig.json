@@ -6,6 +6,7 @@
     { "path": "packages/ingest" },
     { "path": "apps/api" },
     { "path": "apps/web" },
+    { "path": "e2e" },
     { "path": "tsconfig.tools.json" }
   ]
 }

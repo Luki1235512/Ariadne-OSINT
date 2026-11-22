@@ -19,6 +19,9 @@ repomix-output.*
 playwright-report/
 test-results/
 
+# Decision records and notes, kept locally only.
+docs/
+
 .DS_Store
 
 .idea

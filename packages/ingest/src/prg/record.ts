@@ -1,5 +1,5 @@
-import { AreaGeometry } from "@ariadne/shared";
 import { z } from "zod";
+import { AreaGeometry } from "@ariadne/shared";
 
 export const PrgFeature = z.strictObject({
   type: z.literal("Feature"),

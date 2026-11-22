@@ -1,10 +1,14 @@
-import type { AreaGeometry, LinkInput, ObjectInput } from "@ariadne/shared";
-import { MUNICIPALITY_TYPES } from "@ariadne/shared";
 import type { z } from "zod";
+import {
+  MUNICIPALITY_TYPES,
+  type AreaGeometry,
+  type LinkInput,
+  type LocationInput,
+} from "@ariadne/shared";
 import type { PrgFeature } from "./record.js";
 
 export interface MappedUnit {
-  object: z.input<typeof ObjectInput>;
+  object: z.input<typeof LocationInput>;
   geometry: AreaGeometry;
   parentLink: z.input<typeof LinkInput> | null;
   recordRef: string;
@@ -73,7 +77,7 @@ export function mapPrgFeature(feature: PrgFeature): MapResult {
     p.JPT_SJR_KO === "GMI" ? code.slice(0, 4) : p.JPT_SJR_KO === "POW" ? code.slice(0, 2) : null;
   const parentId = parentCode === null ? null : terytObjectId(parentCode);
 
-  const object: z.input<typeof ObjectInput> = {
+  const object: z.input<typeof LocationInput> = {
     id,
     type: "Location",
     countryCode: "PL",

@@ -3,10 +3,12 @@ import { loadConfig } from "./config.js";
 import { buildServer } from "./server.js";
 
 const config = loadConfig(process.env);
-const db = createDb({ connectionString: config.DATABASE_URL });
+const db = createDb({
+  connectionString: config.DATABASE_URL,
+  ...(config.DATABASE_CA_CERT === undefined ? {} : { caCert: config.DATABASE_CA_CERT }),
+});
 const app = buildServer({ config, db });
 
-// Fail at startup with a clear message, rather than on the first request.
 try {
   await ping(db);
 } catch (error) {
@@ -15,7 +17,6 @@ try {
   process.exit(1);
 }
 
-// Docker sends SIGTERM on stop; Ctrl+C sends SIGINT. Finish open requests, then exit.
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
   process.once(signal, () => {
     app.log.info({ signal }, "shutting down");

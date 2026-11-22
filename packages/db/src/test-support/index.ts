@@ -1,9 +1,8 @@
-import type { Kysely } from "kysely";
-import { sql } from "kysely";
+import { sql, type Kysely } from "kysely";
 import pg from "pg";
 import { createDb } from "../connection.js";
-import { migrate, readMigrations } from "../migrate.js";
-import type { Database } from "../schema.js";
+import { migrate, readMigrations } from "../migrate/migrate.js";
+import type { Database } from "../schema/tables.js";
 
 export function testDatabaseUrl(): string {
   const url = process.env.TEST_DATABASE_URL;
@@ -74,6 +73,6 @@ export function createTestDb(): Kysely<Database> {
 
 export async function resetData(db: Kysely<Database>): Promise<void> {
   await sql`
-    TRUNCATE objects, links, sources, object_sources, link_sources, suppressions, object_geometries
+    TRUNCATE objects, links, sources, object_sources, link_sources, suppressions, object_geometries, object_times
   `.execute(db);
 }

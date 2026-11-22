@@ -3,6 +3,9 @@
   --panel-bg: #101010;
   --accent: #ff00e6;
   --text: #eaeaea;
+  --text-muted: #a3a0ad;
+  --border: #26232d;
+  --link: #c9a8ff;
   --panel-width: 320px;
   --header-height: 44px;
   --panel-transition: 250ms ease;
@@ -44,6 +47,7 @@ body {
 .header {
   display: flex;
   align-items: center;
+  gap: 24px;
   padding: 0 16px;
   background: #050505;
 }
@@ -133,4 +137,16 @@ body {
 .panel-toggle:focus-visible {
   outline: 2px solid var(--text);
   outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

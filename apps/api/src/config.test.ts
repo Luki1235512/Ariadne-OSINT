@@ -9,14 +9,27 @@ describe("loadConfig", () => {
       HOST: "127.0.0.1",
       PORT: 3000,
       LOG_LEVEL: "info",
+      TRUST_PROXY_HOPS: 0,
       DATABASE_URL,
     });
   });
 
   it("reads values from the environment", () => {
-    expect(loadConfig({ HOST: "0.0.0.0", PORT: "8000", LOG_LEVEL: "debug", DATABASE_URL })).toEqual(
-      { HOST: "0.0.0.0", PORT: 8000, LOG_LEVEL: "debug", DATABASE_URL },
-    );
+    expect(
+      loadConfig({
+        HOST: "0.0.0.0",
+        PORT: "8000",
+        LOG_LEVEL: "debug",
+        TRUST_PROXY_HOPS: "1",
+        DATABASE_URL,
+      }),
+    ).toEqual({
+      HOST: "0.0.0.0",
+      PORT: 8000,
+      LOG_LEVEL: "debug",
+      TRUST_PROXY_HOPS: 1,
+      DATABASE_URL,
+    });
   });
 
   it("requires the database connection string", () => {
@@ -25,6 +38,27 @@ describe("loadConfig", () => {
 
   it("rejects an invalid port", () => {
     expect(() => loadConfig({ DATABASE_URL, PORT: "not-a-number" })).toThrow(/PORT/);
+  });
+
+  it("reads an optional database certificate and rejects anything else", () => {
+    const cert = "-----BEGIN CERTIFICATE-----\nMIIBfake\n-----END CERTIFICATE-----";
+    expect(loadConfig({ DATABASE_URL, DATABASE_CA_CERT: cert }).DATABASE_CA_CERT).toBe(cert);
+    expect(() => loadConfig({ DATABASE_URL, DATABASE_CA_CERT: "ca.crt" })).toThrow(
+      /DATABASE_CA_CERT/,
+    );
+  });
+
+  it("accepts the web app folder only as an absolute path", () => {
+    expect(loadConfig({ DATABASE_URL, WEB_DIST_DIR: "/app/web" }).WEB_DIST_DIR).toBe("/app/web");
+    expect(loadConfig({ DATABASE_URL }).WEB_DIST_DIR).toBeUndefined();
+    expect(() => loadConfig({ DATABASE_URL, WEB_DIST_DIR: "apps/web/dist" })).toThrow(
+      /WEB_DIST_DIR/,
+    );
+  });
+
+  it("rejects an invalid number of proxy hops", () => {
+    expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "-1" })).toThrow(/TRUST_PROXY_HOPS/);
+    expect(() => loadConfig({ DATABASE_URL, TRUST_PROXY_HOPS: "all" })).toThrow(/TRUST_PROXY_HOPS/);
   });
 
   it("rejects an unknown log level", () => {
